@@ -1,7 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { api } from '@/lib/api'
-import type { ContactPayload } from '@/types'
 
 export function useProfile() {
   return useQuery({ queryKey: ['profile'], queryFn: api.getProfile })
@@ -21,10 +20,4 @@ export function useProject(slug: string | undefined) {
 
 export function useSkills() {
   return useQuery({ queryKey: ['skills'], queryFn: api.getSkills })
-}
-
-export function useSubmitContact() {
-  return useMutation({
-    mutationFn: (payload: ContactPayload) => api.submitContact(payload),
-  })
 }

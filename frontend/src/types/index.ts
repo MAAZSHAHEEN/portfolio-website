@@ -41,16 +41,3 @@ export interface Project {
   architecture: string
   whatILearned: string
 }
-
-export interface ContactPayload {
-  name: string
-  email: string
-  message: string
-  /** Honeypot field - must stay empty for real submissions. */
-  company?: string
-}
-
-export interface ContactResponse {
-  success: boolean
-  detail: string
-}
