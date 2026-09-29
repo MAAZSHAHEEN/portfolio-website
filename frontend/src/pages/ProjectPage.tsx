@@ -1,5 +1,9 @@
+import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
+import { Container } from '@/components/layout/Container'
+import { ProjectDetail } from '@/components/projects/ProjectDetail'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useProject } from '@/lib/queries'
 
 export function ProjectPage() {
@@ -7,25 +11,28 @@ export function ProjectPage() {
   const { data: project, isLoading, isError } = useProject(slug)
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
-      <Link to="/#projects" className="text-sm text-brand-link hover:underline">
-        &larr; Back to projects
+    <Container className="max-w-3xl py-20">
+      <Link
+        to="/#projects"
+        className="focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-sm text-sm text-brand-link focus-visible:ring-2 focus-visible:outline-none"
+      >
+        <ArrowLeft className="size-4" aria-hidden="true" />
+        Back to projects
       </Link>
 
-      {isLoading ? (
-        <p className="mt-8 text-muted-foreground">Loading project...</p>
-      ) : isError || !project ? (
-        <p className="mt-8 text-destructive">Project not found.</p>
-      ) : (
-        <article className="mt-8">
-          <h1 className="font-display text-4xl font-semibold tracking-tight">{project.name}</h1>
-          <p className="mt-4 text-muted-foreground">{project.description}</p>
-          <p className="mt-8 text-sm text-muted-foreground">
-            Full project detail layout (problem, architecture, stack, what I learned) is coming in
-            Phase 2.
-          </p>
-        </article>
-      )}
-    </div>
+      <div className="mt-8">
+        {isLoading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-10 w-2/3" />
+            <Skeleton className="h-5 w-full" />
+            <Skeleton className="h-5 w-1/2" />
+          </div>
+        ) : isError || !project ? (
+          <p className="text-destructive">Project not found.</p>
+        ) : (
+          <ProjectDetail project={project} />
+        )}
+      </div>
+    </Container>
   )
 }

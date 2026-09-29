@@ -1,4 +1,4 @@
-import type { Profile, Project, SkillGroup } from '@/types'
+import type { ContactPayload, ContactResponse, Profile, Project, SkillGroup } from '@/types'
 
 // In dev, VITE_API_URL is unset and requests go through the Vite proxy
 // (/api -> http://localhost:8000). In production it should be the deployed
@@ -24,4 +24,9 @@ export const api = {
   getProjects: () => apiFetch<Project[]>('/projects'),
   getProject: (slug: string) => apiFetch<Project>(`/projects/${slug}`),
   getSkills: () => apiFetch<SkillGroup[]>('/skills'),
+  submitContact: (payload: ContactPayload) =>
+    apiFetch<ContactResponse>('/contact', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
 }
