@@ -1,0 +1,83 @@
+{
+  "profile": {
+    "name": "Maaz Shaheen",
+    "title": "Backend Developer",
+    "tagline": "Python / FastAPI developer building scalable APIs and backend systems.",
+    "bio": "I'm a backend developer focused on Python and FastAPI. I enjoy building scalable APIs and backend systems, and I'm always learning system design and clean architecture principles to write software that holds up in production.",
+    "location": "Islamabad, Pakistan",
+    "email": "maazshaheen5566@gmail.com",
+    "github": "https://github.com/MAAZSHAHEEN",
+    "linkedin": "https://www.linkedin.com/in/maaz-shaheen-772b061b8/",
+    "resumeUrl": "/resume.pdf",
+    "lookingFor": {
+      "roles": ["Entry-level", "Junior", "Internship"],
+      "fields": ["Python", "Backend", "AI engineering"],
+      "locations": ["Islamabad", "Lahore", "Rawalpindi"]
+    },
+    "education": [
+      {
+        "degree": "BS Computer Science",
+        "institution": "UET Mardan",
+        "startYear": 2021,
+        "endYear": 2025
+      }
+    ]
+  },
+  "skills": [
+    {
+      "group": "Backend",
+      "items": ["Python", "FastAPI", "Pydantic", "Async I/O", "REST APIs", "JWT Auth", "SQLAlchemy", "Alembic"]
+    },
+    {
+      "group": "Databases",
+      "items": ["PostgreSQL", "SQL"]
+    },
+    {
+      "group": "DevOps / Deployment",
+      "items": ["Docker", "Docker Compose", "Nginx", "AWS EC2", "Git"]
+    },
+    {
+      "group": "AI",
+      "items": ["Google Gemini API", "Anthropic Claude API", "Agentic workflows"]
+    },
+    {
+      "group": "Tools",
+      "items": ["Uvicorn", "uv", "Ruff", "pytest", "Postman"]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "bug-fixer",
+      "name": "Bug Fixer",
+      "description": "AI-powered Python bug fixer with a self-healing loop. Combines FastAPI with the Google Gemini API in an agentic retry loop, validating each fix with AST parsing before accepting it.",
+      "stack": ["Python", "FastAPI", "Google Gemini API", "AST", "AWS EC2"],
+      "githubUrl": "https://github.com/MAAZSHAHEEN/bug-fixer",
+      "liveUrl": null,
+      "problem": "Manually tracking down and fixing bugs in Python scripts is slow, and simple automated fixes often introduce new syntax errors or don't actually resolve the underlying issue.",
+      "architecture": "A FastAPI backend accepts buggy Python code, sends it to the Google Gemini API for a proposed fix, then validates the returned code by parsing it into an AST. If validation fails, the service retries the fix in an agentic loop, feeding the error back to the model, until a valid fix is produced or a retry limit is reached.",
+      "whatILearned": "TODO(maaz): add specifics on what you learned building the agentic retry loop and working with AST validation (e.g. tricky edge cases, prompt design, or Gemini API quirks)."
+    },
+    {
+      "slug": "fastapi-expense-tracker",
+      "name": "Expense Tracker API",
+      "description": "A FastAPI backend for tracking personal expenses, with JWT authentication and PostgreSQL for persistent storage.",
+      "stack": ["Python", "FastAPI", "JWT", "PostgreSQL"],
+      "githubUrl": "https://github.com/MAAZSHAHEEN/fastapi-expense-tracker",
+      "liveUrl": null,
+      "problem": "Needed a secure, structured way to record and retrieve personal expense data through an API, with proper user authentication instead of an open/unauthenticated backend.",
+      "architecture": "FastAPI exposes REST endpoints for managing expenses, backed by PostgreSQL for storage. JWT-based authentication protects user-specific routes. Deployed on AWS EC2.",
+      "whatILearned": "TODO(maaz): add specifics on what you learned implementing JWT auth and structuring the PostgreSQL schema for this project."
+    },
+    {
+      "slug": "rideshare-api",
+      "name": "RideShare API",
+      "description": "A ride-sharing backend API with JWT role-based access control, async PostgreSQL access via SQLAlchemy and Alembic migrations, containerized with Docker Compose and served behind Nginx.",
+      "stack": ["Python", "FastAPI", "JWT", "RBAC", "Async PostgreSQL", "SQLAlchemy", "Alembic", "Docker Compose", "Nginx"],
+      "githubUrl": "https://github.com/MAAZSHAHEEN/rideshare-api",
+      "liveUrl": "https://rideshare-api.fastapicloud.dev/docs",
+      "problem": "Ride-sharing platforms need to support multiple user roles (e.g. riders and drivers) with different permissions, backed by a database layer that can handle concurrent async requests reliably.",
+      "architecture": "FastAPI with async SQLAlchemy models and Alembic migrations against PostgreSQL. JWT-based role-based access control (RBAC) restricts endpoints by role. The whole stack (API, database, Nginx reverse proxy) is containerized with Docker Compose and deployed on AWS EC2.",
+      "whatILearned": "TODO(maaz): add specifics on what you learned about async SQLAlchemy, Alembic migrations, or setting up Docker Compose + Nginx together."
+    }
+  ]
+}
