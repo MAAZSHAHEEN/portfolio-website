@@ -7,8 +7,8 @@ from app.core.config import get_settings
 settings = get_settings()
 
 app = FastAPI(
-    title="Maaz Shaheen - Portfolio API",
-    description="Backend API serving profile, project, and skills data for maazshaheen.dev",
+    title="Portfolio API",
+    description="Backend API serving validated profile, project, and skills data.",
     version="0.1.0",
 )
 

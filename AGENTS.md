@@ -10,7 +10,10 @@ this before making changes.
 descriptions, links, or any other personal facts directly in frontend
 components or backend route handlers. The frontend only ever renders data it
 fetched from the API; the API only ever serves data validated from
-`site.json`.
+`site.json`. The only personal-text exception is the static title/description
+in `frontend/index.html`, available before JavaScript/API requests run. Keep
+those values aligned with the profile when editing it. The public CV is a
+separate owner-provided asset (currently a placeholder).
 
 If a piece of content is genuinely unknown or needs the site owner's input,
 add a short, honest placeholder in `site.json` and mark it with a
@@ -23,15 +26,13 @@ explicitly provided.
 **Backend** - `backend/`
 - Python >=3.11, FastAPI, Uvicorn, Pydantic v2, pydantic-settings
 - Package manager: `uv` (`pyproject.toml` + `uv.lock`)
-- Anthropic Python SDK (async, streaming) for the "Ask about Maaz" chat
-- slowapi for rate limiting
 - Ruff for linting/formatting, pytest + httpx for tests
 - Layout:
   - `app/main.py` - FastAPI app instance, CORS, router mounting
   - `app/api/routes/` - one module per resource
-  - `app/core/` - settings (`config.py`) and cross-cutting concerns (`limiter.py`)
+  - `app/core/` - settings (`config.py`)
   - `app/schemas/` - Pydantic models (camelCase in/out via `CamelModel`)
-  - `app/services/` - business logic (site data loading, email, AI)
+  - `app/services/` - cached, Pydantic-validated site data loading
   - `app/data/site.json` - the single source of truth for content
 
 **Frontend** - `frontend/`
@@ -76,8 +77,15 @@ Defined as CSS variables in `src/index.css`:
 - Fonts: `--font-display` (Fraunces) for headings, `--font-sans` (Inter) for
   body text.
 
-## Process
+## Current scope and process
 
-The project is built in phases (scaffold -> sections/API wiring -> contact +
-AI chat -> tests/SEO/perf/deploy). Each phase ends with a git commit. Don't
-skip ahead into a later phase's scope without checking in first.
+Implemented: read-only profile/skills/project/health APIs, all homepage
+sections, project detail pages, catch-all frontend 404, safe theme storage,
+route/hash scrolling, and backend tests. Contact uses email/social links.
+There is no contact form endpoint, email service, rate limiting, AI chat,
+CI/CD, Docker, or deployment configuration.
+
+Work in focused phases. Check in with the owner before expanding scope.
+Commit or push only when the owner requests it. Validate backend tests,
+Ruff lint/format checks, frontend lint, strict TypeScript checks, and the
+production build before handing off changes.

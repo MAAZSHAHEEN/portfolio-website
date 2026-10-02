@@ -5,6 +5,16 @@ import type { Profile, Project, SkillGroup } from '@/types'
 // backend's origin, e.g. https://api.maazshaheen.dev
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
+export class ApiError extends Error {
+  readonly status: number
+
+  constructor(status: number, detail: string) {
+    super(`API error ${status}: ${detail}`)
+    this.name = 'ApiError'
+    this.status = status
+  }
+}
+
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}/api${path}`, {
     headers: { 'Content-Type': 'application/json', ...init?.headers },
@@ -13,7 +23,7 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => response.statusText)
-    throw new Error(`API error ${response.status}: ${detail}`)
+    throw new ApiError(response.status, detail)
   }
 
   return response.json() as Promise<T>

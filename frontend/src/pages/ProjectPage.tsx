@@ -3,12 +3,15 @@ import { Link, useParams } from 'react-router-dom'
 
 import { Container } from '@/components/layout/Container'
 import { ProjectDetail } from '@/components/projects/ProjectDetail'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ApiError } from '@/lib/api'
 import { useProject } from '@/lib/queries'
 
 export function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
-  const { data: project, isLoading, isError } = useProject(slug)
+  const { data: project, isLoading, error, refetch, isFetching } = useProject(slug)
+  const notFound = error instanceof ApiError && error.status === 404
 
   return (
     <Container className="max-w-3xl py-20">
@@ -27,8 +30,19 @@ export function ProjectPage() {
             <Skeleton className="h-5 w-full" />
             <Skeleton className="h-5 w-1/2" />
           </div>
-        ) : isError || !project ? (
-          <p className="text-destructive">Project not found.</p>
+        ) : notFound ? (
+          <p role="alert" className="text-destructive">
+            Project not found.
+          </p>
+        ) : error || !project ? (
+          <div role="alert" className="space-y-4">
+            <p className="text-destructive">
+              Could not load this project. Please check your connection and try again.
+            </p>
+            <Button variant="outline" onClick={() => void refetch()} disabled={isFetching}>
+              {isFetching ? 'Retrying...' : 'Try again'}
+            </Button>
+          </div>
         ) : (
           <ProjectDetail project={project} />
         )}

@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Static metadata is available before JavaScript or API requests run.
+         See README.md for the deliberately limited content-rule exception. -->
     <title>Maaz Shaheen - Backend Developer</title>
     <meta
       name="description"
@@ -13,9 +15,12 @@
       // Applied before React mounts to avoid a flash of the wrong theme.
       ;(function () {
         try {
-          var stored = localStorage.getItem('portfolio-theme')
+          var stored
+          try {
+            stored = localStorage.getItem('portfolio-theme')
+          } catch (e) {}
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-          var isDark = stored ? stored === 'dark' : prefersDark
+          var isDark = stored === 'dark' || (stored !== 'light' && prefersDark)
           document.documentElement.classList.toggle('dark', isDark)
         } catch (e) {}
       })()

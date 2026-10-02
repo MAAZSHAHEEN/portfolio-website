@@ -59,14 +59,6 @@ is needed locally.
 |---|---|---|
 | `ENVIRONMENT` | `development` or `production` | `development` |
 | `FRONTEND_ORIGIN` | Allowed CORS origin for the frontend | `http://localhost:5173` |
-| `ANTHROPIC_API_KEY` | API key for the "Ask about Maaz" chat (Phase 3) | - |
-| `ANTHROPIC_MODEL` | Anthropic model id | `claude-sonnet-5-5` |
-| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USERNAME` / `SMTP_PASSWORD` / `SMTP_USE_TLS` | SMTP settings for the contact form (Phase 3) | - |
-| `RESEND_API_KEY` | Alternative to SMTP for sending contact emails (Phase 3) | - |
-| `CONTACT_TO_EMAIL` | Where contact form submissions are sent | `maazshaheen5566@gmail.com` |
-| `CONTACT_FROM_EMAIL` | From address for outgoing contact emails | `no-reply@portfolio.local` |
-| `RATE_LIMIT_CONTACT` | Rate limit for `/api/contact` | `5/hour` |
-| `RATE_LIMIT_CHAT` | Rate limit for `/api/chat` | `20/hour` |
 
 ### Frontend (`frontend/.env`)
 
@@ -77,9 +69,29 @@ is needed locally.
 ## Content
 
 All personal content (bio, education, skills, projects) lives in
-[`backend/app/data/site.json`](./backend/app/data/site.json). The API and
-frontend never hardcode personal facts - see the "Golden rule" in
+[`backend/app/data/site.json`](./backend/app/data/site.json).
+React components render personal facts from the API - see the "Golden rule" in
 [AGENTS.md](./AGENTS.md).
+
+The title and description in `frontend/index.html` are a small, explicit
+exception: static metadata is available before JavaScript runs, including to
+clients that do not execute the app. Keep these two values aligned with
+`site.json` when changing the profile; no build-time generator is required.
+`frontend/public/resume.pdf` is still a placeholder and needs the owner's CV.
+
+## Current functionality
+
+- Homepage: Hero, About, Skills, Projects, Education, and Contact.
+- Project detail pages at `/projects/:slug`, with separate not-found and
+  load-error states and a retry action for load failures.
+- Catch-all frontend 404 page, client-side section navigation, and route scrolling.
+- Light/dark theme with system-preference fallback, safe optional persistence,
+  responsive navigation, and reduced-motion support.
+- Contact uses mailto, email copying, GitHub, and LinkedIn links.
+- Read-only API: `GET /api/health`, `/api/profile`, `/api/skills`,
+  `/api/projects`, and `/api/projects/{slug}`.
+- Seven backend tests. No contact submission endpoint, email service,
+  rate limiting, or AI chat is implemented.
 
 ## Backend commands
 
@@ -87,7 +99,7 @@ frontend never hardcode personal facts - see the "Golden rule" in
 cd backend
 uv run ruff check .        # lint
 uv run ruff format .       # format
-uv run pytest              # tests (added in Phase 4)
+uv run pytest              # tests
 ```
 
 ## Frontend commands
@@ -97,10 +109,13 @@ cd frontend
 pnpm lint            # ESLint
 pnpm format          # Prettier (write)
 pnpm format:check    # Prettier (check only)
+pnpm exec tsc -b      # strict TypeScript checks
 pnpm build           # typecheck + production build
 ```
 
-## Deployment
+## Deployment status
 
-Deployment steps (Vercel/Netlify for the frontend, Dockerized backend on
-Render/Railway/Fly.io, GitHub Actions CI) will be documented here in Phase 4.
+Deployment automation and hosting configuration are not included. The frontend
+supports `VITE_API_URL` for a separate backend origin; the backend permits the
+configured `FRONTEND_ORIGIN`. A frontend host must serve `index.html` for app
+routes such as `/projects/:slug` so direct navigation works with BrowserRouter.

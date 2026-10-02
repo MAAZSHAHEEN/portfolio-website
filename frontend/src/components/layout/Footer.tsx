@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-sm text-muted-foreground sm:flex-row sm:justify-between sm:px-6 lg:px-8">
         <p>
-          &copy; {year} {profile?.name ?? 'Maaz Shaheen'}. All rights reserved.
+          &copy; {year} {profile?.name ?? 'Portfolio'}. All rights reserved.
         </p>
 
         {profile ? (

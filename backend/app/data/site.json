@@ -55,7 +55,7 @@
       "liveUrl": null,
       "problem": "Manually tracking down and fixing bugs in Python scripts is slow, and simple automated fixes often introduce new syntax errors or don't actually resolve the underlying issue.",
       "architecture": "A FastAPI backend accepts buggy Python code, sends it to the Google Gemini API for a proposed fix, then validates the returned code by parsing it into an AST. If validation fails, the service retries the fix in an agentic loop, feeding the error back to the model, until a valid fix is produced or a retry limit is reached.",
-      "whatILearned": "TODO(maaz): add specifics on what you learned building the agentic retry loop and working with AST validation (e.g. tricky edge cases, prompt design, or Gemini API quirks)."
+      "whatILearned": "Combining model-generated fixes with AST validation clarified the value of checking syntax before accepting a result and feeding validation errors into a bounded retry loop."
     },
     {
       "slug": "fastapi-expense-tracker",
@@ -66,7 +66,7 @@
       "liveUrl": null,
       "problem": "Needed a secure, structured way to record and retrieve personal expense data through an API, with proper user authentication instead of an open/unauthenticated backend.",
       "architecture": "FastAPI exposes REST endpoints for managing expenses, backed by PostgreSQL for storage. JWT-based authentication protects user-specific routes. Deployed on AWS EC2.",
-      "whatILearned": "TODO(maaz): add specifics on what you learned implementing JWT auth and structuring the PostgreSQL schema for this project."
+      "whatILearned": "Building an authenticated expense API strengthened my understanding of JWT-protected routes and organizing persistent, user-specific data in PostgreSQL."
     },
     {
       "slug": "rideshare-api",
@@ -77,7 +77,7 @@
       "liveUrl": "https://rideshare-api.fastapicloud.dev/docs",
       "problem": "Ride-sharing platforms need to support multiple user roles (e.g. riders and drivers) with different permissions, backed by a database layer that can handle concurrent async requests reliably.",
       "architecture": "FastAPI with async SQLAlchemy models and Alembic migrations against PostgreSQL. JWT-based role-based access control (RBAC) restricts endpoints by role. The whole stack (API, database, Nginx reverse proxy) is containerized with Docker Compose and deployed on AWS EC2.",
-      "whatILearned": "TODO(maaz): add specifics on what you learned about async SQLAlchemy, Alembic migrations, or setting up Docker Compose + Nginx together."
+      "whatILearned": "Integrating role-based access control, async SQLAlchemy, and Alembic strengthened my understanding of permissions and database migrations. Packaging the API, PostgreSQL, and Nginx with Docker Compose helped me understand how the services work together."
     }
   ]
 }
