@@ -1,9 +1,6 @@
 import type { Profile, Project, SkillGroup } from '@/types'
 
-// In dev, VITE_API_URL is unset and requests go through the Vite proxy
-// (/api -> http://localhost:8000). In production it should be the deployed
-// backend's configured origin.
-const API_BASE = import.meta.env.VITE_API_URL ?? ''
+// Same-origin in production; Vite proxies these paths during development.
 
 export class ApiError extends Error {
   readonly status: number
@@ -16,7 +13,7 @@ export class ApiError extends Error {
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE}/api${path}`, {
+  const response = await fetch(`/api${path}`, {
     headers: { 'Content-Type': 'application/json', ...init?.headers },
     ...init,
   })

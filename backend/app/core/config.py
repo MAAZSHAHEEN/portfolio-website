@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,7 +9,9 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
-    environment: str = "development"
+    environment: str = Field(
+        default="production", validation_alias=AliasChoices("ENVIRONMENT", "FASTAPI_ENV")
+    )
     frontend_origin: str = "http://localhost:5173"
 
     @property

@@ -1,0 +1,16 @@
+# The frontend is generated locally, ignored by git, and required in Cloud.
+!dist/
+!dist/**
+.env
+.env.*
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+tests/
+.git/
+.vscode/
+.idea/
+.fastapicloud/
+*.log
