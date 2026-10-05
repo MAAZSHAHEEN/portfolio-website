@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://maazshaheen.github.io/sitemap.xml

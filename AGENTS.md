@@ -10,10 +10,11 @@ this before making changes.
 descriptions, links, or any other personal facts directly in frontend
 components or backend route handlers. The frontend only ever renders data it
 fetched from the API; the API only ever serves data validated from
-`site.json`. The only personal-text exception is the static title/description
-in `frontend/index.html`, available before JavaScript/API requests run. Keep
-those values aligned with the profile when editing it. The public CV is a
-separate owner-provided asset (currently a placeholder).
+`site.json`. The only personal-text exception is static public metadata
+in `frontend/index.html` and the static social card, available before
+JavaScript/API requests run. This includes title/description, social metadata,
+and Person JSON-LD. Keep those facts aligned with `site.json` when editing it. The public CV is a
+separate owner-provided asset served at `/resume.pdf`.
 
 If a piece of content is genuinely unknown or needs the site owner's input,
 add a short, honest placeholder in `site.json` and mark it with a
@@ -38,11 +39,11 @@ explicitly provided.
 **Frontend** - `frontend/`
 - React 19 + Vite + TypeScript (strict mode)
 - Tailwind CSS v4 (`@tailwindcss/vite`) + shadcn/ui (Base UI primitives)
-- Motion (Framer Motion) for animation, respecting `prefers-reduced-motion`
+- CSS animations and IntersectionObserver for motion, respecting `prefers-reduced-motion`
 - TanStack Query for server state, React Router for routing
 - lucide-react for general icons (brand icons like GitHub/LinkedIn are local
   SVGs in `src/components/icons.tsx` since lucide-react v1 dropped brand icons)
-- Self-hosted fonts via Fontsource: Fraunces (display) + Inter (body)
+- Self-hosted fonts via Fontsource: Inter (headings/body) + JetBrains Mono (technical metadata)
 - ESLint + Prettier for linting/formatting
 - Path alias `@/*` -> `src/*`
 - Dev proxy: `/api` -> `http://localhost:8000` (see `vite.config.ts`)
@@ -72,10 +73,10 @@ Defined as CSS variables in `src/index.css`:
 - Light theme background `#f6f4f0`, dark theme background `#0d0d0f`.
 - Brand accent `#e8834a` (`--brand`) for filled buttons/badges, always paired
   with dark text (`--brand-foreground: #1c1917`) for contrast.
-- Accent text/links (`--brand-link`) use a darker amber `#b84c12` on the light
+- Accent text/links (`--brand-link`) use a darker amber `#ae4510` on the light
   theme (AA contrast on `#f6f4f0`) and `#e8834a` on the dark theme.
-- Fonts: `--font-display` (Fraunces) for headings, `--font-sans` (Inter) for
-  body text.
+- Fonts: `--font-sans` and `--font-display` (Inter) for interface text/headings;
+  `--font-mono` (JetBrains Mono) for technical labels and navigation.
 
 ## Current scope and process
 

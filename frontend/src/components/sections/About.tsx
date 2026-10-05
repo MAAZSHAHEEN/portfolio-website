@@ -1,84 +1,49 @@
-import { MapPin } from 'lucide-react'
-
 import { Container } from '@/components/layout/Container'
 import { SectionHeading } from '@/components/layout/SectionHeading'
 import { Reveal } from '@/components/motion/Reveal'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useProfile } from '@/lib/queries'
 
 export function About() {
   const { data: profile, isLoading, isError } = useProfile()
-
   return (
-    <section id="about" className="scroll-mt-20 border-t border-border py-20 sm:py-28">
+    <section id="about" className="section-shell">
       <Container>
-        <SectionHeading eyebrow="01 · About" title="A little about me" />
-
-        <div className="mt-12 grid gap-10 lg:grid-cols-3">
+        <SectionHeading eyebrow="02 / About" title="Behind the code" />
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
           {isLoading ? (
             <>
-              <div className="space-y-3 lg:col-span-2">
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-2/3" />
-              </div>
-              <Skeleton className="h-48 w-full" />
+              <Skeleton className="h-40 w-full" />
+              <Skeleton className="h-60 w-full" />
             </>
           ) : isError || !profile ? (
-            <p className="text-destructive">Could not load profile from the API.</p>
+            <p role="alert" className="text-destructive">
+              Could not load profile from the API.
+            </p>
           ) : (
             <>
-              <Reveal className="lg:col-span-2">
-                <p className="text-lg leading-relaxed text-muted-foreground">{profile.bio}</p>
-                <p className="mt-6 flex items-center gap-2 text-sm font-medium text-foreground">
-                  <MapPin className="size-4 text-brand-link" aria-hidden="true" />
-                  {profile.location}
+              <Reveal>
+                <p className="max-w-2xl text-lg leading-loose text-muted-foreground">
+                  {profile.bio}
                 </p>
+                <p className="mt-6 font-mono text-sm text-muted-foreground">{profile.location}</p>
               </Reveal>
-
-              <Reveal delay={0.1}>
-                <Card>
-                  <CardContent>
-                    <h3 className="font-display text-lg font-semibold">Currently looking for</h3>
-
-                    <div className="mt-4 space-y-4 text-sm">
-                      <div>
-                        <p className="font-medium text-muted-foreground">Roles</p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {profile.lookingFor.roles.map((role) => (
-                            <Badge key={role} variant="secondary">
-                              {role}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="font-medium text-muted-foreground">Fields</p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {profile.lookingFor.fields.map((field) => (
-                            <Badge key={field} variant="secondary">
-                              {field}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="font-medium text-muted-foreground">Locations</p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {profile.lookingFor.locations.map((location) => (
-                            <Badge key={location} variant="secondary">
-                              {location}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              <Reveal delay={0.1} className="opportunity-panel">
+                <h3 className="mb-6 text-lg font-semibold">Currently looking for</h3>
+                <dl className="space-y-5 text-sm">
+                  <div>
+                    <dt className="eyebrow mb-2">Roles</dt>
+                    <dd className="leading-relaxed">{profile.lookingFor.roles.join(' / ')}</dd>
+                  </div>
+                  <div>
+                    <dt className="eyebrow mb-2">Focus</dt>
+                    <dd className="leading-relaxed">{profile.lookingFor.fields.join(' / ')}</dd>
+                  </div>
+                  <div>
+                    <dt className="eyebrow mb-2">Locations</dt>
+                    <dd className="leading-relaxed">{profile.lookingFor.locations.join(' / ')}</dd>
+                  </div>
+                </dl>
               </Reveal>
             </>
           )}

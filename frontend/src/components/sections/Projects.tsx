@@ -7,27 +7,27 @@ import { useProjects } from '@/lib/queries'
 
 export function Projects() {
   const { data: projects, isLoading, isError } = useProjects()
-
   return (
-    <section id="projects" className="scroll-mt-20 border-t border-border py-20 sm:py-28">
+    <section id="projects" className="section-shell">
       <Container>
         <SectionHeading
-          eyebrow="03 · Projects"
+          eyebrow="01 / Selected work"
           title="Selected projects"
-          description="Backend-focused projects covering APIs, auth, databases, and AI-assisted tooling."
+          description="Explore the implementation and engineering decisions behind each project."
         />
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 space-y-5">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} className="h-72 w-full" />
+              <Skeleton key={index} className="h-64 w-full" />
             ))
           ) : isError || !projects ? (
-            <p className="text-destructive">Could not load projects from the API.</p>
+            <p role="alert" className="text-destructive">
+              Could not load projects from the API.
+            </p>
           ) : (
             projects.map((project, index) => (
-              <Reveal key={project.slug} delay={index * 0.08}>
-                <ProjectCard project={project} />
+              <Reveal key={project.slug} delay={index * 0.09}>
+                <ProjectCard project={project} index={index} />
               </Reveal>
             ))
           )}

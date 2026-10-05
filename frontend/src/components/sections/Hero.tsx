@@ -1,71 +1,92 @@
-import { ArrowRight, Download } from 'lucide-react'
+import { ArrowRight, Download, MapPin } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
+import { HeroLamp } from '@/components/hero/HeroLamp'
+import { HeroStreaks } from '@/components/hero/HeroStreaks'
+import { GitHubIcon, LinkedInIcon } from '@/components/icons'
 import { Container } from '@/components/layout/Container'
-import { Reveal } from '@/components/motion/Reveal'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useProfile } from '@/lib/queries'
+import { useProfile, useSkills } from '@/lib/queries'
 
 export function Hero() {
   const { data: profile, isLoading, isError } = useProfile()
+  const { data: skills } = useSkills()
+  const backend = skills?.[0]
 
   return (
-    <section id="hero" className="relative overflow-hidden py-24 sm:py-32">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-96 bg-brand/10 blur-3xl"
-      />
+    <section id="hero" className="hero-shell lamp-hero">
+      <HeroStreaks />
       <Container>
         {isLoading ? (
-          <div className="max-w-2xl space-y-4">
-            <Skeleton className="h-4 w-32" />
-            <Skeleton className="h-14 w-full" />
-            <Skeleton className="h-6 w-1/2" />
+          <div className="mx-auto max-w-2xl space-y-5 py-12">
+            <Skeleton className="mx-auto h-5 w-48" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="mx-auto h-8 w-2/3" />
             <Skeleton className="h-16 w-full" />
           </div>
         ) : isError || !profile ? (
-          <p className="text-destructive">Could not load profile from the API.</p>
+          <p role="alert" className="text-destructive">
+            Could not load profile from the API.
+          </p>
         ) : (
-          <Reveal>
-            <p className="text-sm font-semibold tracking-widest text-brand-link uppercase">
-              {profile.location}
-            </p>
-            <h1 className="mt-4 font-display text-5xl font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-              {profile.name}
-            </h1>
-            <p className="mt-4 text-xl text-muted-foreground sm:text-2xl">{profile.title}</p>
-            <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
-              {profile.tagline}
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Button
-                size="lg"
-                className="h-11 rounded-lg px-6 text-base"
-                render={<a href="#projects" />}
-              >
-                View Projects
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-11 rounded-lg px-6 text-base"
-                render={<a href={profile.resumeUrl} download />}
-              >
-                <Download className="size-4" aria-hidden="true" />
-                Download CV
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="h-11 rounded-lg px-6 text-base"
-                render={<a href="#contact" />}
-              >
-                Contact
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Button>
-            </div>
-          </Reveal>
+          <>
+            <HeroLamp name={profile.name}>
+              <p className="hero-role">{profile.title}</p>
+              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                {profile.tagline}
+              </p>
+              <p className="mt-4 flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground">
+                <MapPin className="size-3.5" aria-hidden="true" />
+                {profile.location}
+              </p>
+              <div className="mt-7 flex flex-wrap justify-center gap-3">
+                <Button size="lg" render={<Link to="/#projects" />}>
+                  View Projects <ArrowRight className="size-4" aria-hidden="true" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  render={<a href={profile.resumeUrl} download />}
+                >
+                  <Download className="size-4" aria-hidden="true" />
+                  Download CV
+                </Button>
+                <Button size="lg" variant="ghost" render={<Link to="/#contact" />}>
+                  Contact
+                </Button>
+              </div>
+              <div className="mt-4 flex flex-wrap justify-center gap-5">
+                <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">
+                  <GitHubIcon className="size-4" />
+                  GitHub
+                </a>
+                <a className="text-link" href={profile.linkedin} target="_blank" rel="noreferrer">
+                  <LinkedInIcon className="size-4" />
+                  LinkedIn
+                </a>
+              </div>
+            </HeroLamp>
+            {backend ? (
+              <details className="lamp-profile mx-auto mt-6 max-w-2xl">
+                <summary className="font-mono text-xs text-muted-foreground">
+                  Technical profile <span className="ml-2 text-brand-link">/ {backend.group}</span>
+                </summary>
+                <ul className="flex flex-wrap justify-center gap-2 px-4 pt-2">
+                  {backend.items.map((skill) => (
+                    <li key={skill} className="tech-tag">
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pb-3 text-center">
+                  <Link to="/#skills" className="text-link">
+                    Explore the stack <ArrowRight className="size-4" aria-hidden="true" />
+                  </Link>
+                </div>
+              </details>
+            ) : null}
+          </>
         )}
       </Container>
     </section>

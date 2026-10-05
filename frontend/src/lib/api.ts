@@ -2,7 +2,7 @@ import type { Profile, Project, SkillGroup } from '@/types'
 
 // In dev, VITE_API_URL is unset and requests go through the Vite proxy
 // (/api -> http://localhost:8000). In production it should be the deployed
-// backend's origin, e.g. https://api.maazshaheen.dev
+// backend's configured origin.
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
 export class ApiError extends Error {

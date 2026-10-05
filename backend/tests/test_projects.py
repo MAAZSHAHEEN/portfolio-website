@@ -24,7 +24,7 @@ async def test_get_project_by_slug(client: httpx.AsyncClient) -> None:
 
     body = response.json()
     assert body["slug"] == "rideshare-api"
-    assert body["name"] == "RideShare API"
+    assert body["name"] == "Ride-Sharing REST API"
     assert body["liveUrl"] == "https://rideshare-api.fastapicloud.dev/docs"
 
 

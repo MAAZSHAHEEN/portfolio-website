@@ -26,75 +26,77 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="scroll-mt-20 border-t border-border py-20 sm:py-28">
+    <section id="contact" className="section-shell">
       <Container>
-        <SectionHeading
-          eyebrow="05 · Contact"
-          title="Let's work together"
-          description="Have a role or a project in mind? I'd love to hear from you."
-        />
+        <div className="contact-panel">
+          <SectionHeading
+            eyebrow="05 / Contact"
+            title="Let's work together"
+            description="Have a role or a project in mind? I'd love to hear from you."
+          />
 
-        <div className="mt-12">
-          {isLoading ? (
-            <div className="flex flex-wrap gap-4">
-              <Skeleton className="h-12 w-40" />
-              <Skeleton className="h-12 w-40" />
-              <Skeleton className="h-12 w-40" />
-            </div>
-          ) : isError || !profile ? (
-            <p className="text-destructive">Could not load contact details from the API.</p>
-          ) : (
-            <Reveal>
-              <p className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-                {profile.email}
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Button
-                  size="lg"
-                  className="h-12 rounded-lg px-6 text-base"
-                  render={<a href={`mailto:${profile.email}`} />}
-                >
-                  <Mail className="size-4" aria-hidden="true" />
-                  Email me
-                </Button>
-
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-12 rounded-lg px-6 text-base"
-                  onClick={handleCopyEmail}
-                >
-                  {copied ? (
-                    <Check className="size-4" aria-hidden="true" />
-                  ) : (
-                    <Copy className="size-4" aria-hidden="true" />
-                  )}
-                  <span aria-live="polite">{copied ? 'Copied!' : 'Copy email'}</span>
-                </Button>
-
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-12 rounded-lg px-6 text-base"
-                  render={<a href={profile.github} target="_blank" rel="noreferrer" />}
-                >
-                  <GitHubIcon className="size-4" />
-                  GitHub
-                </Button>
-
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-12 rounded-lg px-6 text-base"
-                  render={<a href={profile.linkedin} target="_blank" rel="noreferrer" />}
-                >
-                  <LinkedInIcon className="size-4" />
-                  LinkedIn
-                </Button>
+          <div className="mt-8">
+            {isLoading ? (
+              <div className="flex flex-wrap gap-4">
+                <Skeleton className="h-12 w-40" />
+                <Skeleton className="h-12 w-40" />
+                <Skeleton className="h-12 w-40" />
               </div>
-            </Reveal>
-          )}
+            ) : isError || !profile ? (
+              <p role="alert" className="text-destructive">
+                Could not load contact details from the API.
+              </p>
+            ) : (
+              <Reveal delay={0.08}>
+                <p className="contact-email">{profile.email}</p>
+
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <Button
+                    size="lg"
+                    className="h-12 rounded-lg px-6 text-sm"
+                    render={<a href={`mailto:${profile.email}`} />}
+                  >
+                    <Mail className="size-4" aria-hidden="true" />
+                    Email me
+                  </Button>
+
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 rounded-lg px-6 text-sm"
+                    onClick={handleCopyEmail}
+                  >
+                    {copied ? (
+                      <Check className="size-4" aria-hidden="true" />
+                    ) : (
+                      <Copy className="size-4" aria-hidden="true" />
+                    )}
+                    <span aria-live="polite">{copied ? 'Copied!' : 'Copy email'}</span>
+                  </Button>
+
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 rounded-lg px-6 text-sm"
+                    render={<a href={profile.github} target="_blank" rel="noreferrer" />}
+                  >
+                    <GitHubIcon className="size-4" />
+                    GitHub
+                  </Button>
+
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 rounded-lg px-6 text-sm"
+                    render={<a href={profile.linkedin} target="_blank" rel="noreferrer" />}
+                  >
+                    <LinkedInIcon className="size-4" />
+                    LinkedIn
+                  </Button>
+                </div>
+              </Reveal>
+            )}
+          </div>
         </div>
       </Container>
     </section>

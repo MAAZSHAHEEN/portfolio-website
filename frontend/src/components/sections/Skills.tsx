@@ -1,38 +1,45 @@
 import { Container } from '@/components/layout/Container'
 import { SectionHeading } from '@/components/layout/SectionHeading'
 import { Reveal } from '@/components/motion/Reveal'
-import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSkills } from '@/lib/queries'
 
 export function Skills() {
-  const { data: skillGroups, isLoading, isError } = useSkills()
-
+  const { data: groups, isLoading, isError } = useSkills()
   return (
-    <section id="skills" className="scroll-mt-20 border-t border-border py-20 sm:py-28">
+    <section id="skills" className="section-shell">
       <Container>
-        <SectionHeading eyebrow="02 · Skills" title="What I work with" />
-
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <SectionHeading eyebrow="03 / Skills & tools" title="The stack behind the work" />
+        <div className="skills-grid mt-10">
           {isLoading ? (
             Array.from({ length: 5 }).map((_, index) => (
-              <Skeleton key={index} className="h-32 w-full" />
+              <Skeleton key={index} className="h-64 w-full" />
             ))
-          ) : isError || !skillGroups ? (
-            <p className="text-destructive">Could not load skills from the API.</p>
+          ) : isError || !groups ? (
+            <p role="alert" className="text-destructive">
+              Could not load skills from the API.
+            </p>
           ) : (
-            skillGroups.map((group, index) => (
-              <Reveal key={group.group} delay={index * 0.05}>
-                <div>
-                  <h3 className="font-display text-base font-semibold">{group.group}</h3>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {group.items.map((item) => (
-                      <Badge key={item} variant="outline" className="px-3 py-1 text-sm">
-                        {item}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
+            groups.map((group, index) => (
+              <Reveal
+                key={group.group}
+                delay={index * 0.08}
+                className={`skill-panel ${index === 0 ? 'skill-panel-primary' : ''}`}
+              >
+                <h3 className="font-mono text-sm font-medium text-brand-link">{group.group}</h3>
+                <ul className="mt-5 space-y-3">
+                  {group.items.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-baseline gap-3 font-mono text-sm leading-relaxed text-muted-foreground"
+                    >
+                      <span aria-hidden="true" className="font-mono text-brand-link">
+                        /
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </Reveal>
             ))
           )}

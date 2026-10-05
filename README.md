@@ -73,15 +73,18 @@ All personal content (bio, education, skills, projects) lives in
 React components render personal facts from the API - see the "Golden rule" in
 [AGENTS.md](./AGENTS.md).
 
-The title and description in `frontend/index.html` are a small, explicit
-exception: static metadata is available before JavaScript runs, including to
-clients that do not execute the app. Keep these two values aligned with
-`site.json` when changing the profile; no build-time generator is required.
-`frontend/public/resume.pdf` is still a placeholder and needs the owner's CV.
+Public metadata in `frontend/index.html` and the static social card are a
+small, explicit exception: crawlers can read them before JavaScript/API
+requests run. Keep the title, descriptions, Person JSON-LD, and social-card
+text aligned with `site.json` when changing the profile.
+The owner's CV is served from `frontend/public/resume.pdf` at `/resume.pdf`
+and is copied into the production build by Vite.
 
 ## Current functionality
 
-- Homepage: Hero, About, Skills, Projects, Education, and Contact.
+- Homepage: Hero, Selected Projects, About, Skills, Education, and Contact.
+- Self-hosted Inter and JetBrains Mono, amber accents, technical project cards,
+  categorized skill lists, and responsive light/dark surfaces.
 - Project detail pages at `/projects/:slug`, with separate not-found and
   load-error states and a retry action for load failures.
 - Catch-all frontend 404 page, client-side section navigation, and route scrolling.
@@ -92,6 +95,23 @@ clients that do not execute the app. Keep these two values aligned with
   `/api/projects`, and `/api/projects/{slug}`.
 - Seven backend tests. No contact submission endpoint, email service,
   rate limiting, or AI chat is implemented.
+
+## Public metadata
+
+The current canonical homepage is `https://maazshaheen.github.io/`.
+`frontend/index.html` includes Open Graph, Twitter/X large-image metadata,
+Person JSON-LD, and light/dark theme colors. Public assets include
+`og-image.png` (1200 x 630), a portfolio favicon, `robots.txt`, and
+`sitemap.xml`. The sitemap contains the homepage and the three actual project
+routes; update it if project slugs change. No modification dates are guessed.
+
+`RouteMetadata` updates the document title and description from API data on
+project routes, restores homepage metadata on return, and adds `noindex` to
+missing routes/projects. It does not treat network/server failures as 404s.
+Canonical, social metadata, and structured data remain static homepage
+metadata. Runtime changes do not provide separate initial HTML/social
+previews for project URLs. GitHub Pages deep-route fallback and the deployed
+backend origin remain deployment-phase work.
 
 ## Backend commands
 

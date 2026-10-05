@@ -2,66 +2,63 @@ import { ArrowUpRight, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { GitHubIcon } from '@/components/icons'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import type { Project } from '@/types'
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <Card className="group h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-brand/40">
-      <CardHeader>
-        <Link
-          to={`/projects/${project.slug}`}
-          className="focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-sm font-display text-lg font-semibold tracking-tight focus-visible:ring-2 focus-visible:outline-none"
-        >
-          {project.name}
-          <ArrowUpRight
-            className="size-4 text-brand-link opacity-0 transition-opacity group-hover:opacity-100"
-            aria-hidden="true"
-          />
+    <article className="project-card">
+      <span className="project-number" aria-hidden="true">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+      <div className="min-w-0">
+        <h3 className="project-title">
+          <Link to={`/projects/${project.slug}`} className="focus-link">
+            {project.name}
+          </Link>
+        </h3>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
+        <Link to={`/projects/${project.slug}`} className="text-link mt-5 text-brand-link">
+          View Project <ArrowUpRight className="size-4" aria-hidden="true" />
         </Link>
-      </CardHeader>
-
-      <CardContent className="flex flex-1 flex-col">
-        <p className="text-sm text-muted-foreground">{project.description}</p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
+      </div>
+      <div className="project-stack">
+        <p className="eyebrow mb-3">Built with</p>
+        <ul className="flex flex-wrap gap-2" aria-label="Technologies">
           {project.stack.map((tech) => (
-            <Badge key={tech} variant="secondary" className="text-xs">
+            <li className="tech-tag" key={tech}>
               {tech}
-            </Badge>
+            </li>
           ))}
+        </ul>
+        <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+          {project.githubUrl ? (
+            <a
+              className="text-link"
+              href={project.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View code for ${project.name}`}
+            >
+              <GitHubIcon className="size-4" />
+              Code
+            </a>
+          ) : null}
+          {project.liveUrl ? (
+            <a
+              className="text-link"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Live API for ${project.name}`}
+            >
+              <ExternalLink className="size-4" aria-hidden="true" />
+              Live API
+            </a>
+          ) : null}
         </div>
-      </CardContent>
-
-      <CardFooter className="flex flex-wrap gap-2 bg-transparent">
-        <Button
-          variant="outline"
-          size="sm"
-          render={<a href={project.githubUrl} target="_blank" rel="noreferrer" />}
-        >
-          <GitHubIcon className="size-3.5" />
-          Code
-        </Button>
-        {project.liveUrl ? (
-          <Button
-            variant="outline"
-            size="sm"
-            render={<a href={project.liveUrl} target="_blank" rel="noreferrer" />}
-          >
-            <ExternalLink className="size-3.5" aria-hidden="true" />
-            Live
-          </Button>
-        ) : null}
-        <Button
-          variant="ghost"
-          size="sm"
-          render={<Link to={`/projects/${project.slug}`} />}
-          className="ml-auto"
-        >
-          Details
-        </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </article>
   )
 }

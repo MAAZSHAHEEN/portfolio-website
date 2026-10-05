@@ -1,5 +1,5 @@
-import { motion } from 'motion/react'
-import type { ReactNode } from 'react'
+import { useEffect, useRef } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
@@ -13,21 +13,41 @@ interface RevealProps {
 /** Fades and slides content in once it scrolls into view. No-ops when the
  * user prefers reduced motion. */
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
-  const prefersReducedMotion = useReducedMotion()
+  const element = useRef<HTMLDivElement>(null)
+  const revealed = useRef(false)
+  const reduced = useReducedMotion()
 
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>
-  }
+  useEffect(() => {
+    const node = element.current
+    if (!node || reduced || revealed.current || !('IntersectionObserver' in window)) return
+    const show = () => {
+      revealed.current = true
+      node.classList.remove('reveal-pending')
+      observer.disconnect()
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) show()
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -24px 0px' },
+    )
+    observer.observe(node)
+    node.classList.add('reveal-pending')
+    node.addEventListener('focusin', show)
+    return () => {
+      observer.disconnect()
+      node.removeEventListener('focusin', show)
+      node.classList.remove('reveal-pending')
+    }
+  }, [reduced])
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      ref={element}
+      className={`reveal ${className ?? ''}`}
+      style={{ '--reveal-delay': `${Math.max(0, Math.min(delay, 0.24))}s` } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }

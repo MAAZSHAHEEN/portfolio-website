@@ -1,22 +1,22 @@
 {
   "profile": {
     "name": "Maaz Shaheen",
-    "title": "Backend Developer",
-    "tagline": "Python / FastAPI developer building scalable APIs and backend systems.",
-    "bio": "I'm a backend developer focused on Python and FastAPI. I enjoy building scalable APIs and backend systems, and I'm always learning system design and clean architecture principles to write software that holds up in production.",
+    "title": "Python / FastAPI Backend Developer",
+    "tagline": "Building REST APIs with authentication, structured data, and maintainable backend code.",
+    "bio": "I focus on Python and FastAPI backends, with an emphasis on API design, authentication, and database-backed services. I am learning system design and clean architecture to solve practical engineering problems and build production-ready systems.",
     "location": "Islamabad, Pakistan",
     "email": "maazshaheen5566@gmail.com",
     "github": "https://github.com/MAAZSHAHEEN",
     "linkedin": "https://www.linkedin.com/in/maaz-shaheen-772b061b8/",
     "resumeUrl": "/resume.pdf",
     "lookingFor": {
-      "roles": ["Entry-level", "Junior", "Internship"],
+      "roles": ["Entry-level roles", "Junior roles", "Internships"],
       "fields": ["Python", "Backend", "AI engineering"],
       "locations": ["Islamabad", "Lahore", "Rawalpindi"]
     },
     "education": [
       {
-        "degree": "BS Computer Science",
+        "degree": "BS in Computer Science",
         "institution": "UET Mardan",
         "startYear": 2021,
         "endYear": 2025
@@ -26,7 +26,7 @@
   "skills": [
     {
       "group": "Backend",
-      "items": ["Python", "FastAPI", "Pydantic", "Async I/O", "REST APIs", "JWT Auth", "SQLAlchemy", "Alembic"]
+      "items": ["Python", "FastAPI", "Pydantic", "Async I/O", "REST APIs", "JWT", "SQLAlchemy", "Alembic"]
     },
     {
       "group": "Databases",
@@ -48,36 +48,36 @@
   "projects": [
     {
       "slug": "bug-fixer",
-      "name": "Bug Fixer",
-      "description": "AI-powered Python bug fixer with a self-healing loop. Combines FastAPI with the Google Gemini API in an agentic retry loop, validating each fix with AST parsing before accepting it.",
+      "name": "AI-Powered Python Repair API",
+      "description": "A FastAPI service that uses Google Gemini to propose Python code repairs, checks syntax with AST parsing, and retries failed validation.",
       "stack": ["Python", "FastAPI", "Google Gemini API", "AST", "AWS EC2"],
       "githubUrl": "https://github.com/MAAZSHAHEEN/bug-fixer",
       "liveUrl": null,
-      "problem": "Manually tracking down and fixing bugs in Python scripts is slow, and simple automated fixes often introduce new syntax errors or don't actually resolve the underlying issue.",
-      "architecture": "A FastAPI backend accepts buggy Python code, sends it to the Google Gemini API for a proposed fix, then validates the returned code by parsing it into an AST. If validation fails, the service retries the fix in an agentic loop, feeding the error back to the model, until a valid fix is produced or a retry limit is reached.",
-      "whatILearned": "Combining model-generated fixes with AST validation clarified the value of checking syntax before accepting a result and feeding validation errors into a bounded retry loop."
+      "problem": "AI-generated Python repairs can introduce syntax errors. Proposed code needs validation before it replaces the original file.",
+      "architecture": "A FastAPI endpoint reads the Python file specified in a bug report and requests a repair from Google Gemini. AST parsing checks the proposed code for syntax errors; failed validation feeds into a bounded retry loop. The service backs up the original file before writing the syntax-validated result. Syntax validation does not guarantee that the underlying bug is resolved.",
+      "whatILearned": "Combining model-generated repairs with AST validation taught me to separate syntax checks from functional correctness and feed validation errors into a bounded retry loop."
     },
     {
       "slug": "fastapi-expense-tracker",
       "name": "Expense Tracker API",
-      "description": "A FastAPI backend for tracking personal expenses, with JWT authentication and PostgreSQL for persistent storage.",
-      "stack": ["Python", "FastAPI", "JWT", "PostgreSQL"],
+      "description": "A FastAPI expense-tracking API with JWT authentication and user-specific CRUD operations, using SQLAlchemy and SQLite for storage.",
+      "stack": ["Python", "FastAPI", "JWT", "SQLAlchemy", "SQLite", "AWS EC2"],
       "githubUrl": "https://github.com/MAAZSHAHEEN/fastapi-expense-tracker",
       "liveUrl": null,
-      "problem": "Needed a secure, structured way to record and retrieve personal expense data through an API, with proper user authentication instead of an open/unauthenticated backend.",
-      "architecture": "FastAPI exposes REST endpoints for managing expenses, backed by PostgreSQL for storage. JWT-based authentication protects user-specific routes. Deployed on AWS EC2.",
-      "whatILearned": "Building an authenticated expense API strengthened my understanding of JWT-protected routes and organizing persistent, user-specific data in PostgreSQL."
+      "problem": "Personal expense records need authenticated access and user-specific queries so each user can manage their own data.",
+      "architecture": "FastAPI exposes registration, login, and expense CRUD endpoints. JWT authentication identifies the current user, and SQLAlchemy queries restrict expense access to that user. SQLite stores the data. Deployed on AWS EC2.",
+      "whatILearned": "Building JWT-protected expense routes strengthened my understanding of authentication, user-specific SQLAlchemy queries, and persistent data storage with SQLite."
     },
     {
       "slug": "rideshare-api",
-      "name": "RideShare API",
-      "description": "A ride-sharing backend API with JWT role-based access control, async PostgreSQL access via SQLAlchemy and Alembic migrations, containerized with Docker Compose and served behind Nginx.",
-      "stack": ["Python", "FastAPI", "JWT", "RBAC", "Async PostgreSQL", "SQLAlchemy", "Alembic", "Docker Compose", "Nginx"],
+      "name": "Ride-Sharing REST API",
+      "description": "A FastAPI ride-sharing API with JWT authentication, role-based ride and booking workflows, async SQLAlchemy, PostgreSQL, and Alembic migrations.",
+      "stack": ["Python", "FastAPI", "JWT", "RBAC", "PostgreSQL", "SQLAlchemy", "Alembic", "Docker Compose", "Nginx", "AWS EC2"],
       "githubUrl": "https://github.com/MAAZSHAHEEN/rideshare-api",
       "liveUrl": "https://rideshare-api.fastapicloud.dev/docs",
-      "problem": "Ride-sharing platforms need to support multiple user roles (e.g. riders and drivers) with different permissions, backed by a database layer that can handle concurrent async requests reliably.",
-      "architecture": "FastAPI with async SQLAlchemy models and Alembic migrations against PostgreSQL. JWT-based role-based access control (RBAC) restricts endpoints by role. The whole stack (API, database, Nginx reverse proxy) is containerized with Docker Compose and deployed on AWS EC2.",
-      "whatILearned": "Integrating role-based access control, async SQLAlchemy, and Alembic strengthened my understanding of permissions and database migrations. Packaging the API, PostgreSQL, and Nginx with Docker Compose helped me understand how the services work together."
+      "problem": "Ride creation and booking require different permissions for drivers and passengers, with database-backed access to ride and booking records.",
+      "architecture": "FastAPI uses JWT authentication and role checks for ride creation, passenger bookings, and driver responses. Async SQLAlchemy accesses PostgreSQL, with Alembic managing schema migrations. Docker Compose runs the API and database together, with AWS EC2 and Nginx used for deployment.",
+      "whatILearned": "Integrating role checks, async SQLAlchemy, and Alembic strengthened my understanding of permissions and database migrations. Packaging the API and PostgreSQL with Docker Compose clarified how the services work together."
     }
   ]
 }

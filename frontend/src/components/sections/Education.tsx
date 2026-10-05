@@ -1,5 +1,4 @@
 import { GraduationCap } from 'lucide-react'
-
 import { Container } from '@/components/layout/Container'
 import { SectionHeading } from '@/components/layout/SectionHeading'
 import { Reveal } from '@/components/motion/Reveal'
@@ -8,32 +7,32 @@ import { useProfile } from '@/lib/queries'
 
 export function Education() {
   const { data: profile, isLoading, isError } = useProfile()
-
   return (
-    <section id="education" className="scroll-mt-20 border-t border-border py-20 sm:py-28">
+    <section id="education" className="section-shell">
       <Container>
-        <SectionHeading eyebrow="04 · Education" title="Education" />
-
-        <div className="mt-12 space-y-6">
+        <SectionHeading eyebrow="04 / Education" title="Academic foundation" />
+        <div className="mt-10 space-y-5">
           {isLoading ? (
-            <Skeleton className="h-20 w-full max-w-xl" />
+            <Skeleton className="h-28 w-full" />
           ) : isError || !profile ? (
-            <p className="text-destructive">Could not load education from the API.</p>
+            <p role="alert" className="text-destructive">
+              Could not load education from the API.
+            </p>
           ) : (
             profile.education.map((entry, index) => (
-              <Reveal key={`${entry.institution}-${entry.degree}`} delay={index * 0.05}>
-                <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-6">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand-link">
-                    <GraduationCap className="size-5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <h3 className="font-display text-lg font-semibold">{entry.degree}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{entry.institution}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {entry.startYear} &ndash; {entry.endYear}
-                    </p>
-                  </div>
+              <Reveal
+                key={`${entry.institution}-${entry.degree}`}
+                delay={index * 0.05}
+                className="education-row"
+              >
+                <GraduationCap className="size-6 shrink-0 text-brand-link" aria-hidden="true" />
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xl font-semibold">{entry.degree}</h3>
+                  <p className="mt-2 text-muted-foreground">{entry.institution}</p>
                 </div>
+                <p className="font-mono text-sm text-muted-foreground">
+                  {entry.startYear} &ndash; {entry.endYear}
+                </p>
               </Reveal>
             ))
           )}

@@ -14,11 +14,8 @@ export function ProjectPage() {
   const notFound = error instanceof ApiError && error.status === 404
 
   return (
-    <Container className="max-w-3xl py-20">
-      <Link
-        to="/#projects"
-        className="focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-sm text-sm text-brand-link focus-visible:ring-2 focus-visible:outline-none"
-      >
+    <Container className="max-w-[960px] py-12 sm:py-20">
+      <Link to="/#projects" className="text-link text-brand-link">
         <ArrowLeft className="size-4" aria-hidden="true" />
         Back to projects
       </Link>
