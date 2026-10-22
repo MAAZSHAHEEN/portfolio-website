@@ -17,6 +17,7 @@ export interface Profile {
   tagline: string
   bio: string
   location: string
+  availability: string
   email: string
   github: string
   linkedin: string
@@ -30,14 +31,37 @@ export interface SkillGroup {
   items: string[]
 }
 
+export interface ProjectLink {
+  label: string
+  url: string
+}
+
+export interface ProjectImage {
+  src: string
+  alt: string
+  width: number
+  height: number
+}
+
 export interface Project {
   slug: string
   name: string
+  status: string
   description: string
   stack: string[]
-  githubUrl: string
+  githubUrl: string | null
   liveUrl: string | null
+  liveLabel: string | null
+  links: ProjectLink[]
+  image: ProjectImage | null
+  highlights: string[]
   problem: string
   architecture: string
   whatILearned: string
+}
+
+export interface SiteData {
+  profile: Profile
+  skills: SkillGroup[]
+  projects: Project[]
 }

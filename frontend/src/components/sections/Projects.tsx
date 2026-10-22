@@ -14,7 +14,7 @@ export function Projects() {
           id="projects-title"
           eyebrow="01 / Selected work"
           title="Selected projects"
-          description="Backend services with the problem each one addresses, the stack behind it, and links to the code and case study."
+          description="Three projects, each with the problem it solves, the stack behind it, and links to the live app, code or case study."
         />
         <div className="project-list">
           {isLoading ? (

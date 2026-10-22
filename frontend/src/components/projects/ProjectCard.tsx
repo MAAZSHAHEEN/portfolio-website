@@ -20,10 +20,26 @@ export function ProjectCard({ project, index, total }: ProjectCardProps) {
         <span className="project-number">{number}</span>
         <span className="project-meta-total">/ {String(total).padStart(2, '0')}</span>
         <span className="project-meta-rule" />
-        <span className="project-meta-tag">
-          {project.liveUrl ? 'Live API docs' : 'Source code'}
-        </span>
+        <span className="project-meta-tag">{project.status}</span>
       </div>
+
+      {project.image ? (
+        <Link
+          to={`/projects/${project.slug}`}
+          className="project-media"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
+          <img
+            src={project.image.src}
+            alt=""
+            width={project.image.width}
+            height={project.image.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </Link>
+      ) : null}
 
       <div className="project-main">
         <h3 id={headingId} className="project-title">
@@ -80,13 +96,27 @@ export function ProjectCard({ project, index, total }: ProjectCardProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label={`Open the live API docs for ${project.name}`}
+                aria-label={`Open the ${(project.liveLabel ?? 'live site').toLowerCase()} for ${project.name}`}
               >
                 <ExternalLink className="size-4" aria-hidden="true" />
-                Live API
+                {project.liveLabel ?? 'Live'}
               </a>
             </li>
           ) : null}
+          {project.links.map((link) => (
+            <li key={link.url}>
+              <a
+                className="text-link"
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${link.label} for ${project.name} (opens in a new tab)`}
+              >
+                <ExternalLink className="size-4" aria-hidden="true" />
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </article>

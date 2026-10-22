@@ -47,6 +47,10 @@ export function Hero() {
           <>
             <HeroLamp name={profile.name}>
               <p className="hero-role">{profile.title}</p>
+              <p className="hero-availability">
+                <span className="status-dot" aria-hidden="true" />
+                {profile.availability}
+              </p>
               <p className="hero-tagline">{profile.tagline}</p>
               <div className="hero-actions">
                 <Button size="lg" render={<Link to="/#projects" />}>

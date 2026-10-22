@@ -20,6 +20,7 @@ class Profile(CamelModel):
     tagline: str
     bio: str
     location: str
+    availability: str
     email: str
     github: str
     linkedin: str

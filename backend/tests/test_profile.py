@@ -7,7 +7,9 @@ async def test_get_profile(client: httpx.AsyncClient) -> None:
 
     body = response.json()
     assert body["name"] == "Maaz Shaheen"
-    assert body["title"] == "Python / FastAPI Backend Developer"
+    assert body["title"] == "Python Backend Engineer / FastAPI Developer"
+    assert body["location"] == "Lahore, Pakistan"
+    assert body["availability"] == "Open to International Remote Opportunities"
     assert body["email"] == "maazshaheen5566@gmail.com"
     assert body["github"].startswith("https://github.com/")
     assert body["linkedin"].startswith("https://www.linkedin.com/")

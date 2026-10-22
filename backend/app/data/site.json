@@ -1,18 +1,30 @@
 {
   "profile": {
     "name": "Maaz Shaheen",
-    "title": "Python / FastAPI Backend Developer",
-    "tagline": "Building REST APIs with authentication, structured data, and maintainable backend code.",
-    "bio": "I focus on Python and FastAPI backends, with an emphasis on API design, authentication, and database-backed services. I am learning system design and clean architecture to solve practical engineering problems and build production-ready systems.",
-    "location": "Islamabad, Pakistan",
+    "title": "Python Backend Engineer / FastAPI Developer",
+    "tagline": "I build FastAPI and PostgreSQL backends with tested authentication, server-side permissions and data integrity under concurrent load.",
+    "bio": "I'm a Python backend engineer based in Lahore. My work centres on FastAPI services backed by PostgreSQL: async SQLAlchemy, Alembic migrations, JWT authentication, permission policies enforced on the server, and integration tests that run in CI on every push. I also integrate LLMs into products, from Google Gemini in HireLoop AI to a Gemma 4 coding agent for a Kaggle competition.",
+    "location": "Lahore, Pakistan",
     "email": "maazshaheen5566@gmail.com",
     "github": "https://github.com/MAAZSHAHEEN",
     "linkedin": "https://www.linkedin.com/in/maaz-shaheen-772b061b8/",
     "resumeUrl": "/resume.pdf",
     "lookingFor": {
-      "roles": ["Entry-level roles", "Junior roles", "Internships"],
-      "fields": ["Python", "Backend", "AI engineering"],
-      "locations": ["Islamabad", "Lahore", "Rawalpindi"]
+      "roles": [
+        "Python Backend Engineer",
+        "FastAPI Developer",
+        "Backend Software Engineer"
+      ],
+      "fields": [
+        "Python",
+        "FastAPI",
+        "Backend APIs",
+        "AI integration"
+      ],
+      "locations": [
+        "Remote from Pakistan: US, Canada, UK, Europe, Australia",
+        "On-site or hybrid in Lahore or Islamabad"
+      ]
     },
     "education": [
       {
@@ -21,63 +33,182 @@
         "startYear": 2021,
         "endYear": 2025
       }
-    ]
+    ],
+    "availability": "Open to International Remote Opportunities"
   },
   "skills": [
     {
       "group": "Backend",
-      "items": ["Python", "FastAPI", "Pydantic", "Async I/O", "REST APIs", "JWT", "SQLAlchemy", "Alembic"]
+      "items": [
+        "Python",
+        "FastAPI",
+        "Pydantic",
+        "Async I/O",
+        "REST APIs",
+        "JWT",
+        "SQLAlchemy (async)",
+        "Alembic"
+      ]
     },
     {
       "group": "Databases",
-      "items": ["PostgreSQL", "SQL"]
+      "items": [
+        "PostgreSQL",
+        "SQL",
+        "Redis",
+        "Supabase"
+      ]
     },
     {
       "group": "DevOps / Deployment",
-      "items": ["Docker", "Docker Compose", "Nginx", "AWS EC2", "Git"]
+      "items": [
+        "Docker",
+        "Docker Compose",
+        "GitHub Actions",
+        "FastAPI Cloud",
+        "Nginx",
+        "AWS EC2",
+        "Git",
+        "Linux"
+      ]
     },
     {
       "group": "AI",
-      "items": ["Google Gemini API", "Anthropic Claude API", "Agentic workflows"]
+      "items": [
+        "Google Gemini API",
+        "Gemma 4",
+        "Google ADK",
+        "Anthropic Claude API",
+        "Agentic workflows"
+      ]
     },
     {
       "group": "Tools",
-      "items": ["Uvicorn", "uv", "Ruff", "pytest", "Postman"]
+      "items": [
+        "Uvicorn",
+        "uv",
+        "Ruff",
+        "pytest",
+        "Postman",
+        "React",
+        "TypeScript"
+      ]
     }
   ],
   "projects": [
     {
-      "slug": "bug-fixer",
-      "name": "AI-Powered Python Repair API",
-      "description": "A FastAPI service that uses Google Gemini to propose Python code repairs, checks syntax with AST parsing, and retries failed validation.",
-      "stack": ["Python", "FastAPI", "Google Gemini API", "AST", "AWS EC2"],
-      "githubUrl": "https://github.com/MAAZSHAHEEN/bug-fixer",
-      "liveUrl": null,
-      "problem": "AI-generated Python repairs can introduce syntax errors. Proposed code needs validation before it replaces the original file.",
-      "architecture": "A FastAPI endpoint reads the Python file specified in a bug report and requests a repair from Google Gemini. AST parsing checks the proposed code for syntax errors; failed validation feeds into a bounded retry loop. The service backs up the original file before writing the syntax-validated result. Syntax validation does not guarantee that the underlying bug is resolved.",
-      "whatILearned": "Combining model-generated repairs with AST validation taught me to separate syntax checks from functional correctness and feed validation errors into a bounded retry loop."
-    },
-    {
-      "slug": "fastapi-expense-tracker",
-      "name": "Expense Tracker API",
-      "description": "A FastAPI expense-tracking API with JWT authentication and user-specific CRUD operations, using SQLAlchemy and SQLite for storage.",
-      "stack": ["Python", "FastAPI", "JWT", "SQLAlchemy", "SQLite", "AWS EC2"],
-      "githubUrl": "https://github.com/MAAZSHAHEEN/fastapi-expense-tracker",
-      "liveUrl": null,
-      "problem": "Personal expense records need authenticated access and user-specific queries so each user can manage their own data.",
-      "architecture": "FastAPI exposes registration, login, and expense CRUD endpoints. JWT authentication identifies the current user, and SQLAlchemy queries restrict expense access to that user. SQLite stores the data. Deployed on AWS EC2.",
-      "whatILearned": "Building JWT-protected expense routes strengthened my understanding of authentication, user-specific SQLAlchemy queries, and persistent data storage with SQLite."
-    },
-    {
       "slug": "rideshare-api",
-      "name": "Ride-Sharing REST API",
-      "description": "A FastAPI ride-sharing API with JWT authentication, role-based ride and booking workflows, async SQLAlchemy, PostgreSQL, and Alembic migrations.",
-      "stack": ["Python", "FastAPI", "JWT", "RBAC", "PostgreSQL", "SQLAlchemy", "Alembic", "Docker Compose", "Nginx", "AWS EC2"],
-      "githubUrl": "https://github.com/MAAZSHAHEEN/rideshare-api",
+      "name": "RideShare API v2",
+      "status": "v2 in development",
+      "description": "Intercity ride-sharing backend for Pakistan built with FastAPI, async SQLAlchemy and PostgreSQL. JWT auth, a server-side capability policy and row-level locking keep permissions and seat counts correct under concurrent requests.",
+      "stack": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "SQLAlchemy (async)",
+        "Alembic",
+        "JWT",
+        "Redis",
+        "React",
+        "Docker",
+        "GitHub Actions",
+        "FastAPI Cloud"
+      ],
+      "githubUrl": "https://github.com/MAAZSHAHEEN/rideshare-api/tree/rideshare-v2",
       "liveUrl": "https://rideshare-api.fastapicloud.dev/docs",
-      "problem": "Ride creation and booking require different permissions for drivers and passengers, with database-backed access to ride and booking records.",
-      "architecture": "FastAPI uses JWT authentication and role checks for ride creation, passenger bookings, and driver responses. Async SQLAlchemy accesses PostgreSQL, with Alembic managing schema migrations. Docker Compose runs the API and database together, with AWS EC2 and Nginx used for deployment.",
-      "whatILearned": "Integrating role checks, async SQLAlchemy, and Alembic strengthened my understanding of permissions and database migrations. Packaging the API and PostgreSQL with Docker Compose clarified how the services work together."
+      "liveLabel": "Live API docs",
+      "links": [
+        {
+          "label": "Live app",
+          "url": "https://rideshare-api.fastapicloud.dev/"
+        }
+      ],
+      "image": {
+        "src": "/images/projects/rideshare-api.webp",
+        "alt": "RideShare v2 React frontend landing page, served with the FastAPI API from one origin",
+        "width": 1200,
+        "height": 750
+      },
+      "highlights": [
+        "Ride, then booking row locks (SELECT ... FOR UPDATE) serialize accept, cancel and complete",
+        "Unique partial index blocks duplicate active bookings and maps to HTTP 409",
+        "One account acts as passenger and driver; permissions are checked on the server, never trusted from the client",
+        "PostgreSQL integration, concurrency and migration tests run in GitHub Actions on every push"
+      ],
+      "problem": "Drivers publish intercity rides with a fixed number of seats and passengers request them. Two concurrent accept or cancel requests can oversell seats, and a dashboard mode chosen in the browser must never be treated as permission.",
+      "architecture": "Routers declare the HTTP contract and services own the business rules and transactions on the request's AsyncSession. Every booking decision locks the Ride row first and then its bookings in ID order, so accept, cancel and complete serialize and seat changes commit atomically. A unique partial index on active bookings prevents duplicates. One ordinary account can act as passenger and driver: permissions.py is the shared server-side capability policy, and the frontend's selected mode is presentation only. Alembic owns the schema, and auth rate limiting is Redis-backed and opt-in. The v2 work lives on the rideshare-v2 branch, with a preview deployment on FastAPI Cloud serving the React frontend and the API from one origin.",
+      "whatILearned": "Correctness under concurrency comes from lock order and database constraints, not from checks in Python. PostgreSQL integration tests, including concurrency and migration upgrade/downgrade tests running in CI, made larger refactors safe."
+    },
+    {
+      "slug": "hireloop-ai",
+      "name": "HireLoop AI",
+      "status": "Bolt Builders Week 2026 entry",
+      "description": "An AI career workspace that analyses a resume, scores it against a job post, drafts tailored applications, tracks applications on a Kanban board and offers AI coaching. Built with Bolt.new, Google Gemini and Supabase.",
+      "stack": [
+        "React",
+        "TypeScript",
+        "Supabase",
+        "PostgreSQL",
+        "Row Level Security",
+        "Edge Functions",
+        "Google Gemini API",
+        "Bolt.new"
+      ],
+      "githubUrl": null,
+      "liveUrl": "https://hireloop-ai-career-a-fqgf.bolt.host/",
+      "liveLabel": "Live app",
+      "links": [
+        {
+          "label": "Demo video",
+          "url": "https://youtu.be/_D_ccAJORpY"
+        }
+      ],
+      "image": {
+        "src": "/images/projects/hireloop-ai.webp",
+        "alt": "HireLoop AI landing page showing the AI career workspace",
+        "width": 1200,
+        "height": 750
+      },
+      "highlights": [
+        "Resume analysis, job matching, tailored drafts, Kanban tracker, analytics and AI coaching",
+        "Gemini runs in a Supabase Edge Function that requires a signed-in user",
+        "JSON response schemas and friendly rate-limit errors",
+        "Submitted to Bolt Builders Week 2026 on October 20, 2026"
+      ],
+      "problem": "Job seekers juggle resumes, job posts, drafts and follow-ups across tabs, and general-purpose AI tools readily invent experience that is not on the resume.",
+      "architecture": "A React and TypeScript frontend on Supabase Auth and Postgres with row-level security. Gemini calls run in a Supabase Edge Function that requires an authenticated user, uses JSON response schemas and returns user-safe errors. Resumes upload as PDF, DOCX or TXT and are parsed in the browser. A code check rejects drafts that claim employment at the target company, with one retry.",
+      "whatILearned": "Shipping an LLM feature means owning its failure modes: Gemini's thinking tokens were silently truncating JSON output until I disabled thinking and enforced response schemas. Prompts alone do not stop invented claims, so the riskiest one also gets a code check."
+    },
+    {
+      "slug": "gemma-4-coding-agent",
+      "name": "Gemma 4 Coding Agent",
+      "status": "Ongoing Kaggle competition",
+      "description": "Case study of my entry in Kaggle's Gemma 4 coding-agent competition: an autonomous agent built on Gemma 4 31B and Google's Agent Development Kit that works through Python coding tasks without human input.",
+      "stack": [
+        "Python",
+        "Gemma 4 31B",
+        "Google ADK",
+        "Kaggle Notebooks"
+      ],
+      "githubUrl": null,
+      "liveUrl": null,
+      "liveLabel": null,
+      "links": [
+        {
+          "label": "Kaggle profile",
+          "url": "https://www.kaggle.com/maazshaheen"
+        }
+      ],
+      "image": null,
+      "highlights": [
+        "Agent built with Google ADK on Gemma 4 31B",
+        "Runs within the free weekly Kaggle GPU quota",
+        "First official submission: 0.06 on the public leaderboard",
+        "Full write-up after the competition closes on December 2, 2026"
+      ],
+      "problem": "An open-weight model has to fix real code inside strict GPU and time limits, with no human in the loop.",
+      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Each experiment is logged and compared before anything is submitted. The first official submission scored 0.06 on the public leaderboard. Code, prompts and detailed results stay private until the competition rules allow a write-up after December 2, 2026.",
+      "whatILearned": "Local scores did not predict the leaderboard. Measuring on the official scorer early, and changing one variable at a time, saves scarce GPU hours."
     }
   ]
 }

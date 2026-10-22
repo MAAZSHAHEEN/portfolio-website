@@ -22,7 +22,7 @@ export function ProjectDetail({ project, position, total }: ProjectDetailProps) 
     <article className="detail">
       <header className="detail-header">
         <p className="eyebrow">
-          Case study
+          {project.status} · Case study
           {position && total
             ? ` / ${String(position).padStart(2, '0')} of ${String(total).padStart(2, '0')}`
             : ''}
@@ -46,14 +46,48 @@ export function ProjectDetail({ project, position, total }: ProjectDetailProps) 
               render={<a href={project.liveUrl} target="_blank" rel="noreferrer" />}
             >
               <ExternalLink className="size-4" aria-hidden="true" />
-              Live API docs
+              {project.liveLabel ?? 'Live'}
             </Button>
           ) : null}
+          {project.links.map((link) => (
+            <Button
+              key={link.url}
+              size="lg"
+              variant="ghost"
+              render={<a href={link.url} target="_blank" rel="noreferrer" />}
+            >
+              <ExternalLink className="size-4" aria-hidden="true" />
+              {link.label}
+            </Button>
+          ))}
         </div>
       </header>
 
+      {project.image ? (
+        <figure className="detail-media">
+          <img
+            src={project.image.src}
+            alt={project.image.alt}
+            width={project.image.width}
+            height={project.image.height}
+            decoding="async"
+            fetchPriority="high"
+          />
+        </figure>
+      ) : null}
+
       <div className="detail-body">
         <aside className="detail-aside" aria-label="Project facts">
+          {project.highlights.length ? (
+            <>
+              <p className="project-label">Highlights</p>
+              <ul className="detail-highlights">
+                {project.highlights.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
           <p className="project-label">Stack</p>
           <ul className="tech-list" aria-label="Technologies">
             {project.stack.map((tech) => (
