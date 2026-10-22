@@ -1741,8 +1741,15 @@ button.text-link {
   aspect-ratio: 16 / 10;
   background: var(--muted);
 }
+.project-media,
+.detail-media {
+  position: relative;
+}
+/* Absolute so the intrinsic image height never overrides the box's aspect ratio. */
 .project-media img,
 .detail-media img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
