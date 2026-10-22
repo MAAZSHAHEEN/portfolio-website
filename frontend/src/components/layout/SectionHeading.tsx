@@ -7,6 +7,8 @@ interface SectionHeadingProps {
   description?: string
   align?: 'left' | 'center'
   className?: string
+  /** Id for the heading so its section can reference it via aria-labelledby. */
+  id?: string
 }
 
 export function SectionHeading({
@@ -15,18 +17,17 @@ export function SectionHeading({
   description,
   align = 'left',
   className,
+  id,
 }: SectionHeadingProps) {
   return (
     <Reveal
       className={cn('section-heading', align === 'center' && 'mx-auto text-center', className)}
     >
       <p className="eyebrow">{eyebrow}</p>
-      <h2 className="section-title">{title}</h2>
-      {description ? (
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          {description}
-        </p>
-      ) : null}
+      <h2 id={id} className="section-title">
+        {title}
+      </h2>
+      {description ? <p className="section-description">{description}</p> : null}
     </Reveal>
   )
 }

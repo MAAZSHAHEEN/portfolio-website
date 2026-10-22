@@ -7,45 +7,47 @@ import { useProfile } from '@/lib/queries'
 export function About() {
   const { data: profile, isLoading, isError } = useProfile()
   return (
-    <section id="about" className="section-shell">
+    <section id="about" className="section-shell" aria-labelledby="about-title">
       <Container>
-        <SectionHeading eyebrow="02 / About" title="Behind the code" />
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
+        <div className="about-grid">
+          <SectionHeading id="about-title" eyebrow="02 / About" title="Behind the code" />
           {isLoading ? (
-            <>
+            <div className="space-y-6">
+              <Skeleton className="h-32 w-full" />
               <Skeleton className="h-40 w-full" />
-              <Skeleton className="h-60 w-full" />
-            </>
+            </div>
           ) : isError || !profile ? (
             <p role="alert" className="text-destructive">
               Could not load profile from the API.
             </p>
           ) : (
-            <>
+            <div className="min-w-0">
               <Reveal>
-                <p className="max-w-2xl text-lg leading-loose text-muted-foreground">
-                  {profile.bio}
-                </p>
-                <p className="mt-6 font-mono text-sm text-muted-foreground">{profile.location}</p>
+                <p className="about-bio">{profile.bio}</p>
               </Reveal>
-              <Reveal delay={0.1} className="opportunity-panel">
-                <h3 className="mb-6 text-lg font-semibold">Currently looking for</h3>
-                <dl className="space-y-5 text-sm">
-                  <div>
-                    <dt className="eyebrow mb-2">Roles</dt>
-                    <dd className="leading-relaxed">{profile.lookingFor.roles.join(' / ')}</dd>
-                  </div>
-                  <div>
-                    <dt className="eyebrow mb-2">Focus</dt>
-                    <dd className="leading-relaxed">{profile.lookingFor.fields.join(' / ')}</dd>
-                  </div>
-                  <div>
-                    <dt className="eyebrow mb-2">Locations</dt>
-                    <dd className="leading-relaxed">{profile.lookingFor.locations.join(' / ')}</dd>
-                  </div>
-                </dl>
+              <Reveal delay={0.08}>
+                <div className="opportunity-panel">
+                  <h3 className="opportunity-title">
+                    <span className="status-dot" aria-hidden="true" />
+                    Currently looking for
+                  </h3>
+                  <dl className="opportunity-list">
+                    <div>
+                      <dt>Roles</dt>
+                      <dd>{profile.lookingFor.roles.join(' · ')}</dd>
+                    </div>
+                    <div>
+                      <dt>Focus</dt>
+                      <dd>{profile.lookingFor.fields.join(' · ')}</dd>
+                    </div>
+                    <div>
+                      <dt>Locations</dt>
+                      <dd>{profile.lookingFor.locations.join(' · ')}</dd>
+                    </div>
+                  </dl>
+                </div>
               </Reveal>
-            </>
+            </div>
           )}
         </div>
       </Container>

@@ -1,4 +1,4 @@
-import { Menu, X } from 'lucide-react'
+import { Download, Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -42,11 +42,8 @@ export function Navbar() {
     >
       <Container>
         <nav aria-label="Primary" className="flex min-h-18 items-center justify-between gap-3">
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className="focus-link inline-flex min-h-11 items-center font-mono text-sm font-medium tracking-tight"
-          >
+          <Link to="/" onClick={() => setIsOpen(false)} className="focus-link nav-brand">
+            <span className="nav-brand-mark" aria-hidden="true" />
             {profile?.name ?? 'Portfolio'}
           </Link>
           <div className="flex items-center gap-2 lg:gap-5">
@@ -59,6 +56,12 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
+            {profile ? (
+              <a href={profile.resumeUrl} download className="nav-cv hidden md:inline-flex">
+                <Download className="size-3.5" aria-hidden="true" />
+                CV
+              </a>
+            ) : null}
             <ThemeToggle />
             <button
               id="menu-toggle"
@@ -90,6 +93,19 @@ export function Navbar() {
                 </Link>
               </li>
             ))}
+            {profile ? (
+              <li>
+                <a
+                  href={profile.resumeUrl}
+                  download
+                  onClick={() => setIsOpen(false)}
+                  className="text-link flex min-h-12 w-full gap-2 rounded-lg px-3 hover:bg-accent"
+                >
+                  <Download className="size-4" aria-hidden="true" />
+                  Download CV
+                </a>
+              </li>
+            ) : null}
           </ul>
         </div>
       </Container>

@@ -1,4 +1,5 @@
 import { GraduationCap } from 'lucide-react'
+
 import { Container } from '@/components/layout/Container'
 import { SectionHeading } from '@/components/layout/SectionHeading'
 import { Reveal } from '@/components/motion/Reveal'
@@ -8,34 +9,42 @@ import { useProfile } from '@/lib/queries'
 export function Education() {
   const { data: profile, isLoading, isError } = useProfile()
   return (
-    <section id="education" className="section-shell">
+    <section id="education" className="section-shell" aria-labelledby="education-title">
       <Container>
-        <SectionHeading eyebrow="04 / Education" title="Academic foundation" />
-        <div className="mt-10 space-y-5">
-          {isLoading ? (
-            <Skeleton className="h-28 w-full" />
-          ) : isError || !profile ? (
-            <p role="alert" className="text-destructive">
-              Could not load education from the API.
-            </p>
-          ) : (
-            profile.education.map((entry, index) => (
-              <Reveal
-                key={`${entry.institution}-${entry.degree}`}
-                delay={index * 0.05}
-                className="education-row"
-              >
-                <GraduationCap className="size-6 shrink-0 text-brand-link" aria-hidden="true" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-xl font-semibold">{entry.degree}</h3>
-                  <p className="mt-2 text-muted-foreground">{entry.institution}</p>
-                </div>
-                <p className="font-mono text-sm text-muted-foreground">
-                  {entry.startYear} &ndash; {entry.endYear}
-                </p>
+        <div className="about-grid">
+          <SectionHeading
+            id="education-title"
+            eyebrow="04 / Education"
+            title="Academic foundation"
+          />
+          <div className="min-w-0">
+            {isLoading ? (
+              <Skeleton className="h-24 w-full" />
+            ) : isError || !profile ? (
+              <p role="alert" className="text-destructive">
+                Could not load education from the API.
+              </p>
+            ) : (
+              <Reveal>
+                <ul className="education-list">
+                  {profile.education.map((entry) => (
+                    <li key={`${entry.institution}-${entry.degree}`} className="education-row">
+                      <GraduationCap className="education-icon" aria-hidden="true" />
+                      <div className="min-w-0">
+                        <h3 className="education-degree">{entry.degree}</h3>
+                        <p className="education-school">{entry.institution}</p>
+                      </div>
+                      <p className="education-years">
+                        <time dateTime={String(entry.startYear)}>{entry.startYear}</time>
+                        {' – '}
+                        <time dateTime={String(entry.endYear)}>{entry.endYear}</time>
+                      </p>
+                    </li>
+                  ))}
+                </ul>
               </Reveal>
-            ))
-          )}
+            )}
+          </div>
         </div>
       </Container>
     </section>
