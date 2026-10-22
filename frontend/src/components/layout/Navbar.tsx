@@ -10,13 +10,13 @@ import { useProfile } from '@/lib/queries'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(
-    () => typeof window !== 'undefined' && window.scrollY > 20,
-  )
+  // Starts false so prerendered markup matches; the effect syncs the real position.
+  const [scrolled, setScrolled] = useState(false)
   const { data: profile } = useProfile()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])

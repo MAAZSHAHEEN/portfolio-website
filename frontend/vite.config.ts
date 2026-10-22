@@ -4,13 +4,15 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 
+const CANONICAL_ORIGIN = 'https://maazshaheen.tech'
+
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, import.meta.dirname, 'VITE_')
-  const configuredUrl = env.VITE_SITE_URL?.trim()
-  if (command === 'build' && !configuredUrl) {
-    throw new Error('Set VITE_SITE_URL to the actual portfolio HTTPS origin before building.')
-  }
+  // Production builds default to the canonical custom domain so a build can never
+  // ship canonical/OG/sitemap URLs pointing at a platform subdomain by accident.
+  const configuredUrl =
+    env.VITE_SITE_URL?.trim() || (command === 'build' ? CANONICAL_ORIGIN : undefined)
   const siteUrl = new URL(configuredUrl || 'http://localhost:5173')
   if (
     siteUrl.pathname !== '/' ||
@@ -48,7 +50,10 @@ export default defineConfig(({ command, mode }) => {
       return `/projects/${project.slug}`
     }),
   ]
+  // Exposed to the client and the SSR bundle so runtime metadata uses the same origin.
+  process.env.VITE_SITE_URL = origin
   return {
+    define: { 'import.meta.env.VITE_SITE_URL': JSON.stringify(origin) },
     plugins: [
       react(),
       tailwindcss(),

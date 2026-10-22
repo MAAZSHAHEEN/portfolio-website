@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
 const QUERY = '(prefers-reduced-motion: reduce)'
 
-/** Tracks the user's OS-level reduced-motion preference reactively. */
+function subscribe(onChange: () => void) {
+  const mediaQuery = window.matchMedia(QUERY)
+  mediaQuery.addEventListener('change', onChange)
+  return () => mediaQuery.removeEventListener('change', onChange)
+}
+
+/** Tracks the user's OS-level reduced-motion preference reactively. The server
+ * snapshot (false) is used while hydrating prerendered HTML, so markup matches. */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(QUERY).matches,
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(QUERY).matches,
+    () => false,
   )
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(QUERY)
-    const handleChange = () => setReduced(mediaQuery.matches)
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
-
-  return reduced
 }

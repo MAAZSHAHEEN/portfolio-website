@@ -4,22 +4,28 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Public metadata is static so crawlers can read it before React/API requests.
-         Personal facts match backend/app/data/site.json; URLs use the current production host. -->
-    <title>Maaz Shaheen | Python / FastAPI Backend Developer</title>
+    <meta name="author" content="Maaz Shaheen" />
+    <meta name="theme-color" content="#f6f4f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0d0f" media="(prefers-color-scheme: dark)" />
+    <!-- Route metadata. The build-time prerenderer (scripts/prerender.mjs) replaces
+         everything between these markers per route, generated from site.json via
+         src/lib/seo.ts. The defaults below are only used by the Vite dev server. -->
+    <!--route-meta:start-->
+    <title>Maaz Shaheen | Python Backend Engineer &amp; FastAPI Developer, Lahore</title>
     <meta
       name="description"
-      content="Maaz Shaheen is a Python and FastAPI backend developer building REST APIs and backend systems. Explore selected projects, code, and engineering decisions."
+      content="Maaz Shaheen is a Python backend engineer in Lahore, Pakistan, building FastAPI and PostgreSQL services."
     />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="%PORTFOLIO_SITE_URL%/" />
-    <meta name="theme-color" content="#f6f4f0" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d0d0f" media="(prefers-color-scheme: dark)" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Maaz Shaheen | Python / FastAPI Backend Developer" />
+    <meta property="og:type" content="profile" />
+    <meta
+      property="og:title"
+      content="Maaz Shaheen | Python Backend Engineer &amp; FastAPI Developer, Lahore"
+    />
     <meta
       property="og:description"
-      content="Maaz Shaheen is a Python and FastAPI backend developer building REST APIs and backend systems. Explore selected projects, code, and engineering decisions."
+      content="Maaz Shaheen is a Python backend engineer in Lahore, Pakistan, building FastAPI and PostgreSQL services."
     />
     <meta property="og:url" content="%PORTFOLIO_SITE_URL%/" />
     <meta property="og:image" content="%PORTFOLIO_SITE_URL%/og-image.png" />
@@ -28,34 +34,23 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Maaz Shaheen — Python / FastAPI Backend Developer on a dark charcoal card with a warm amber lamp motif."
+      content="Maaz Shaheen — Python Backend Engineer and FastAPI Developer, on a dark charcoal card with a warm amber lamp motif."
     />
-    <meta property="og:site_name" content="Maaz Shaheen Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Maaz Shaheen | Python / FastAPI Backend Developer" />
+    <meta
+      name="twitter:title"
+      content="Maaz Shaheen | Python Backend Engineer &amp; FastAPI Developer, Lahore"
+    />
     <meta
       name="twitter:description"
-      content="Maaz Shaheen is a Python and FastAPI backend developer building REST APIs and backend systems. Explore selected projects, code, and engineering decisions."
+      content="Maaz Shaheen is a Python backend engineer in Lahore, Pakistan, building FastAPI and PostgreSQL services."
     />
     <meta name="twitter:image" content="%PORTFOLIO_SITE_URL%/og-image.png" />
-    <meta name="twitter:image:alt" content="Maaz Shaheen — Python / FastAPI Backend Developer." />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Maaz Shaheen",
-        "url": "%PORTFOLIO_SITE_URL%/",
-        "jobTitle": "Python / FastAPI Backend Developer",
-        "sameAs": [
-          "https://github.com/MAAZSHAHEEN",
-          "https://www.linkedin.com/in/maaz-shaheen-772b061b8/"
-        ],
-        "alumniOf": {
-          "@type": "CollegeOrUniversity",
-          "name": "UET Mardan"
-        }
-      }
-    </script>
+    <meta
+      name="twitter:image:alt"
+      content="Maaz Shaheen — Python Backend Engineer and FastAPI Developer, on a dark charcoal card with a warm amber lamp motif."
+    />
+    <!--route-meta:end-->
     <script>
       // Applied before React mounts to avoid a flash of the wrong theme.
       ;(function () {
@@ -72,7 +67,8 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
+    <!--app-data-->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

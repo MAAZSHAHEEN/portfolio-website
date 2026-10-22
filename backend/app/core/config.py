@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     )
     frontend_origin: str = "http://localhost:5173"
 
+    # Public origin every canonical URL points at.
+    canonical_origin: str = "https://maazshaheen.tech"
+    # Legacy hosts that should 301 to canonical_origin. Opt-in: enable only after
+    # confirming the custom domain does not reach the app with one of these Host
+    # headers, otherwise the redirect would loop.
+    legacy_host_redirect: bool = False
+    legacy_hosts: list[str] = ["maaz-shaheen-portfolio.fastapicloud.dev"]
+
     @property
     def is_development(self) -> bool:
         return self.environment.lower() == "development"

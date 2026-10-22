@@ -1,36 +1,36 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 
 export type Theme = 'light' | 'dark'
 
 const STORAGE_KEY = 'portfolio-theme'
+const listeners = new Set<() => void>()
 
-function getPreferredTheme(): Theme {
-  if (typeof window === 'undefined') return 'light'
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY)
-    if (stored === 'light' || stored === 'dark') return stored
-  } catch {
-    // Storage can be blocked; fall back to the system preference.
-  }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+/** The inline script in index.html sets the `dark` class before React mounts, so
+ * the class on <html> is the source of truth on the client. */
+function getTheme(): Theme {
+  return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
 }
 
-/** Persisted light/dark theme, synced with the `dark` class on <html>. */
+function setThemeValue(theme: Theme) {
+  document.documentElement.classList.toggle('dark', theme === 'dark')
+  try {
+    window.localStorage.setItem(STORAGE_KEY, theme)
+  } catch {
+    // The theme still works for this session without persistence.
+  }
+  listeners.forEach((listener) => listener())
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+/** Persisted light/dark theme. Hydration uses the server snapshot ('light'), then
+ * React re-renders with the real theme without a mismatch. */
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(getPreferredTheme)
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark')
-    try {
-      window.localStorage.setItem(STORAGE_KEY, theme)
-    } catch {
-      // The theme still works for this session without persistence.
-    }
-  }, [theme])
-
-  const toggleTheme = useCallback(() => {
-    setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
-  }, [])
-
+  const theme = useSyncExternalStore<Theme>(subscribe, getTheme, () => 'light')
+  const setTheme = useCallback((next: Theme) => setThemeValue(next), [])
+  const toggleTheme = useCallback(() => setThemeValue(getTheme() === 'dark' ? 'light' : 'dark'), [])
   return { theme, setTheme, toggleTheme }
 }
