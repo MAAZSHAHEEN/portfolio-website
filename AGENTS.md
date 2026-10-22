@@ -10,9 +10,9 @@ this before making changes.
 descriptions, links, or any other personal facts directly in frontend
 components or backend route handlers. The frontend only ever renders data it
 fetched from the API; the API only ever serves data validated from
-`site.json`. The only personal-text exception is static public metadata
-in `frontend/index.html` and the static social card, available before
-JavaScript/API requests run. This includes title/description, social metadata,
+`site.json`. Public metadata and prerendered HTML are generated from `site.json` at
+build time (`src/lib/seo.ts`, `scripts/prerender.mjs`); `frontend/index.html`
+only holds dev-server defaults between the route-meta markers. This includes title/description, social metadata,
 and Person JSON-LD. Keep those facts aligned with `site.json` when editing it. The public CV is a
 separate owner-provided asset served at `/resume.pdf`.
 
@@ -113,5 +113,5 @@ Deploy from `backend/` using `uv run fastapi deploy` only when authorized.
 FastAPI Cloud does not run the frontend build. The Cloud ignore file explicitly
 includes gitignored `dist/` and excludes .env files, virtualenvs, caches and tests.
 `[tool.fastapi]` specifies `app.main:app`. Set Cloud `ENVIRONMENT=production`.
-Never link to or modify the owner's existing bug-fixer/rideshare-api apps.
+Never link to or modify the owner's other FastAPI Cloud apps.
 See README for exact local production, deployment, and future custom-domain steps.
