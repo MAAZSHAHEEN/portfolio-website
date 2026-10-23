@@ -203,11 +203,11 @@
       "highlights": [
         "Agent built with Google ADK on Gemma 4 31B",
         "Runs within the free weekly Kaggle GPU quota",
-        "First official submission: 0.06 on the public leaderboard",
+        "Best public leaderboard score so far: 0.13, up from 0.06 on the first submission",
         "Full write-up after the competition closes on December 2, 2026"
       ],
       "problem": "An open-weight model has to fix real code inside strict GPU and time limits, with no human in the loop.",
-      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Each experiment is logged and compared before anything is submitted. The first official submission scored 0.06 on the public leaderboard. Code, prompts and detailed results stay private until the competition rules allow a write-up after December 2, 2026.",
+      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Each experiment is logged and compared before anything is submitted. The first official submission scored 0.06 on the public leaderboard; a later revision raised the best public score to 0.13. Code, prompts and detailed results stay private until the competition rules allow a write-up after December 2, 2026.",
       "whatILearned": "Local scores did not predict the leaderboard. Measuring on the official scorer early, and changing one variable at a time, saves scarce GPU hours."
     }
   ]

@@ -149,7 +149,7 @@ From the repository root, in PowerShell:
 ```powershell
 cd frontend
 pnpm install
-$env:VITE_SITE_URL = Read-Host 'Actual portfolio HTTPS origin assigned by FastAPI Cloud'
+$env:VITE_SITE_URL = 'https://maazshaheen.tech'
 pnpm build
 cd ../backend
 uv sync
@@ -170,36 +170,38 @@ No frontend build is needed to run the development API. Restore the terminal
 variable to development after local production testing. CORS permits only
 the configured development origin; production needs no CORS middleware.
 
-### Future deployment (not performed yet)
+### Production deployment
 
-Once the actual portfolio hostname is known, set `VITE_SITE_URL` to that
-HTTPS origin, rebuild, then from `backend/` run:
+Production is the existing FastAPI Cloud application `maaz-shaheen-portfolio`
+(default host `maaz-shaheen-portfolio.fastapicloud.dev`), served on the custom
+domain `https://maazshaheen.tech` through Cloudflare. Deploy only to that app.
+Never create a new app or link this directory to any other FastAPI Cloud app.
 
-```powershell
+From the repository root:
+
+```bash
+cd frontend
+pnpm install --frozen-lockfile
+VITE_SITE_URL=https://maazshaheen.tech pnpm build
+cd ../backend
 uv sync
-uv run fastapi deploy
+uv run fastapi deploy   # when prompted, select the existing maaz-shaheen-portfolio app
 ```
-
-Do not deploy an old or test-origin build. The hostname is not guessed.
-For validation before a hostname is assigned, `https://deployment-test.invalid`
-may be used as an explicitly non-deployable test origin. It MUST be replaced
-and the frontend rebuilt before upload. Production builds reject missing
-origins, localhost, and the obsolete GitHub Pages hostname.
 
 Cloud builds Python dependencies, not the frontend: always run `pnpm build`
 locally before each deployment. Deploy from `backend/`, whose package contains
 `pyproject.toml`, `uv.lock`, `app/` (including `site.json`), and `dist/`.
 `dist/` stays gitignored but `backend/.fastapicloudignore` explicitly includes
 it in Cloud uploads and excludes environments, caches, tests, and IDE files.
-Do not upload `.env` files or commit Cloud credentials. Set
-`ENVIRONMENT=production` in the portfolio application's Cloud environment.
+Do not upload `.env` files or commit Cloud credentials (`backend/.fastapicloud/`
+is local only). Set `ENVIRONMENT=production` in the app's Cloud environment.
 No paid API keys or application secrets are required.
 
-Create/select a new portfolio app in the available third slot only when
-approved. Do not link this directory to any other existing FastAPI Cloud app. If the hostname is assigned during initial setup,
-rebuild using that assigned origin before the final deployment. No Cloud
-app, deployment, or GitHub push has been performed by this preparation.
+Production builds reject a missing origin and localhost. Updating a Cloud
+runtime variable alone does not change static frontend metadata; rebuild.
 
-Later, after purchasing `maazshaheen.dev`, connect it in FastAPI Cloud,
-set `VITE_SITE_URL=https://maazshaheen.dev`, rebuild, and redeploy. Updating a
-Cloud runtime variable alone does not change static frontend metadata.
+### Rollback
+
+To return production to a previous release, check out that commit, rebuild
+the frontend with `VITE_SITE_URL=https://maazshaheen.tech`, and run
+`uv run fastapi deploy` from `backend/` against the same app.
