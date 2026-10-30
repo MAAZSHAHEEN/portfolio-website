@@ -50,6 +50,7 @@ async def test_legacy_host_redirect(monkeypatch, enabled, host, status):
         ("/projects/bug-fixer", "/#additional-projects"),
         ("/projects/bug-fixer/", "/#additional-projects"),
         ("/projects/fastapi-expense-tracker", "/#projects"),
+        ("/projects/fastapi-expense-tracker/", "/#projects"),
     ],
 )
 async def test_removed_project_slugs_redirect_home(client, dist, path, target):

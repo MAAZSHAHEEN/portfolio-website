@@ -35,7 +35,9 @@ async def test_rideshare_is_v2_branch_without_unverified_hosting(
     assert body["liveUrl"] == "https://rideshare-api.fastapicloud.dev/docs"
     text = json.dumps(body)
     # EC2/Nginx only as the v1 deployment the main-branch README documents.
-    assert "v1 was deployed on AWS EC2 behind Nginx" in text
+    assert "v1 (main branch) was deployed on AWS EC2 behind Nginx" in text
+    assert "194 tests passing in CI" in body["testing"]["summary"]
+    assert "rideshare-v2" in body["testing"]["summary"]
     assert "systemd" not in text
 
 
@@ -95,3 +97,31 @@ async def test_repair_api_is_a_compact_additional_project(client: httpx.AsyncCli
     assert "fastapicloud" not in json.dumps(card)
     raw = json.loads(SITE_DATA_PATH.read_text(encoding="utf-8"))
     assert "bug-fixer" not in [p["slug"] for p in raw["projects"]]
+
+
+def test_rideshare_has_no_region_framing() -> None:
+    raw = SITE_DATA_PATH.read_text(encoding="utf-8").lower()
+    for term in ["khyber", "pakhtunkhwa", "intercity", "lahore–islamabad", "lahore-islamabad"]:
+        assert term not in raw, term
+    data = json.loads(SITE_DATA_PATH.read_text(encoding="utf-8"))
+    rideshare = next(p for p in data["projects"] if p["slug"] == "rideshare-api")
+    neutral = "a ride-sharing backend connecting drivers and passengers"
+    assert neutral in rideshare["description"].lower()
+
+
+def test_hireloop_build_disclosure() -> None:
+    data = json.loads(SITE_DATA_PATH.read_text(encoding="utf-8"))
+    hireloop = next(p for p in data["projects"] if p["slug"] == "hireloop-ai")
+    sentence = "Built using Bolt.new and Supabase, with AI-assisted code generation."
+    assert sentence in hireloop["description"]
+    assert sentence in hireloop["role"]
+    text = json.dumps(hireloop).lower()
+    assert "i disabled" not in text and "my fix" not in text
+
+
+def test_repair_api_is_labelled_prototype_without_demo() -> None:
+    data = json.loads(SITE_DATA_PATH.read_text(encoding="utf-8"))
+    repair = next(p for p in data["additionalProjects"] if p["id"] == "ai-python-repair-api")
+    assert "prototype" in repair["label"].lower()
+    assert "liveUrl" not in repair and "demoUrl" not in repair
+    assert "no authentication" in repair["note"]

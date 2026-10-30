@@ -3,7 +3,7 @@
     "name": "Maaz Shaheen",
     "title": "Python Backend Engineer · FastAPI",
     "tagline": "I build FastAPI and PostgreSQL backends: authentication, server-side permissions, migrations, and data that stays correct under concurrent requests.",
-    "bio": "I'm a Computer Science graduate from UET Mardan (2021–2025), focused on Python backend engineering. My strongest work is in FastAPI with async SQLAlchemy and PostgreSQL: Alembic migrations, JWT authentication with server-side permission checks, Docker, and CI. I also build LLM features with Google Gemini and competed in Kaggle's Gemma 4 coding-agent challenge.",
+    "bio": "I'm a Computer Science graduate from UET Mardan (2021–2025), focused on Python backend engineering. My strongest work is in FastAPI with async SQLAlchemy and PostgreSQL: Alembic migrations, JWT authentication with server-side permission checks, Docker, and CI. I also build LLM features with Google Gemini and am competing in Kaggle's Gemma 4 coding-agent competition.",
     "location": "Lahore, Pakistan",
     "email": "maazshaheen5566@gmail.com",
     "github": "https://github.com/MAAZSHAHEEN",
@@ -93,8 +93,7 @@
         "TypeScript",
         "Uvicorn",
         "uv",
-        "Ruff",
-        "Postman"
+        "Ruff"
       ]
     }
   ],
@@ -103,7 +102,7 @@
       "slug": "rideshare-api",
       "name": "RideShare API v2",
       "status": "v2 in development · live preview",
-      "description": "Intercity ride-sharing backend built with FastAPI, async SQLAlchemy and PostgreSQL. JWT auth, a server-side capability policy and row-level locking keep permissions and seat counts correct under concurrent requests.",
+      "description": "A ride-sharing backend connecting drivers and passengers, built with FastAPI, async SQLAlchemy and PostgreSQL. JWT auth, a server-side capability policy and row-level locking keep permissions and seat counts correct under concurrent requests.",
       "stack": [
         "Python",
         "FastAPI",
@@ -126,7 +125,7 @@
           "url": "https://rideshare-api.fastapicloud.dev/"
         },
         {
-          "label": "CI run (194 tests)",
+          "label": "CI run: 194 tests (v2 branch)",
           "url": "https://github.com/MAAZSHAHEEN/rideshare-api/actions/runs/39391809960"
         }
       ],
@@ -140,14 +139,14 @@
         "Ride, then booking row locks (SELECT … FOR UPDATE) serialize accept, cancel and complete",
         "Unique partial index blocks duplicate active bookings and maps to HTTP 409",
         "One account acts as passenger and driver; permissions are checked on the server, never trusted from the client",
-        "194 tests passing in CI against real PostgreSQL, including concurrency and migration tests"
+        "v2 (rideshare-v2 branch): 194 tests passing in CI against real PostgreSQL, including concurrency and migration tests"
       ],
-      "problem": "Drivers publish intercity rides with a fixed number of seats and passengers request them. Two concurrent accept or cancel requests can oversell seats, and a dashboard mode chosen in the browser must never be treated as permission.",
+      "problem": "Drivers publish rides with a fixed number of seats and passengers request them. Two concurrent accept or cancel requests can oversell seats, and a dashboard mode chosen in the browser must never be treated as permission.",
       "architecture": "Routers declare the HTTP contract and services own the business rules and transactions on the request's AsyncSession. Every booking decision locks the Ride row first and then its bookings in ID order, so accept, cancel and complete serialize and seat changes commit atomically. A unique partial index on active bookings prevents duplicates. One ordinary account can act as passenger and driver: permissions.py is the shared server-side capability policy, and the frontend's selected mode is presentation only. Alembic owns the schema, and auth rate limiting is Redis-backed and opt-in. The v2 work lives on the rideshare-v2 branch, with a preview deployment on FastAPI Cloud serving the React frontend and the API from one origin.",
       "whatILearned": "Correctness under concurrency comes from lock order and database constraints, not from checks in Python. PostgreSQL integration tests, including concurrency and migration upgrade/downgrade tests running in CI, made larger refactors safe.",
       "kind": "Featured case study",
       "featured": true,
-      "users": "Built for intercity commuters in Khyber Pakhtunkhwa. Drivers publish rides with a fixed number of seats; passengers search and request seats; drivers accept or decline requests and complete or cancel rides.",
+      "users": "A ride-sharing backend connecting drivers and passengers. Drivers publish rides with a fixed number of seats; passengers search and request seats; drivers accept or decline requests and complete or cancel rides.",
       "role": "Solo developer and maintainer: API design, data model and Alembic migrations, service layer, tests, CI and deployment. The React frontend lives in the same repository and is served by the API.",
       "features": [
         "Registration and JWT login; GET /me returns the account and its allowed modes",
@@ -361,7 +360,7 @@
         "Optional Redis rate limiter for auth: fixed windows, atomic Lua, HMAC-keyed, fails closed"
       ],
       "testing": {
-        "summary": "194 tests passing in CI. The backend suite uses unittest against a real PostgreSQL 15 database, with Redis 7.4 as a service, after a fresh Alembic upgrade.",
+        "summary": "v2 (rideshare-v2 branch): 194 tests passing in CI. The backend suite uses unittest against a real PostgreSQL 15 database, with Redis 7.4 as a service, after a fresh Alembic upgrade.",
         "items": [
           "Concurrency races: accept vs cancel, and two concurrent accepts consuming one seat",
           "Migration upgrade, downgrade and re-upgrade",
@@ -369,10 +368,10 @@
           "bcrypt offload keeps the event loop responsive"
         ],
         "ciUrl": "https://github.com/MAAZSHAHEEN/rideshare-api/actions/runs/39391809960",
-        "ciLabel": "CI run: Ran 194 tests … OK (rideshare-v2, Oct 20, 2026)"
+        "ciLabel": "CI run on rideshare-v2: Ran 194 tests … OK (Oct 20, 2026)"
       },
       "deployment": [
-        "v1 was deployed on AWS EC2 behind Nginx; v2 runs on FastAPI Cloud, serving the React frontend and the API from one origin",
+        "v1 (main branch) was deployed on AWS EC2 behind Nginx, per its README; v2 (rideshare-v2 branch) runs on FastAPI Cloud, serving the React frontend and the API from one origin",
         "Multi-stage Dockerfile: Node 22 builds the frontend, then a Python 3.11-slim image runs uvicorn on $PORT",
         "Docker Compose runs PostgreSQL 15 for local development",
         "GitHub Actions runs the PostgreSQL integration suite on pushes to main and rideshare-v2 and on every pull request"
@@ -410,11 +409,11 @@
       "highlights": [
         "Agent built with Google ADK on Gemma 4 31B",
         "Runs within the free weekly Kaggle GPU quota",
-        "Best public leaderboard score 0.20, up from 0.06 on the first of six submissions",
-        "Paper-track write-up \"When Thinking Helps—and Hurts\" submitted on October 28, 2026"
+        "Main track: best public leaderboard score 0.20 (submission S006), up from 0.06 on the first of six submissions",
+        "Paper track: submitted a write-up, \"When Thinking Helps—and Hurts\", on October 28, 2026"
       ],
       "problem": "An open-weight model has to fix real code inside strict GPU and time limits, with no human in the loop.",
-      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Every experiment is logged and compared before anything is submitted, including bounded reasoning budgets. Along the way I found a hang in the evaluation harness, where a synchronous command tool blocked the event loop, and added a stricter timeout safety gate. Six official submissions so far; the best public score is 0.20, up from 0.06 on the first.",
+      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Every experiment is logged and compared before anything is submitted, including bounded reasoning budgets. Along the way I found a hang in the evaluation harness, where a synchronous command tool blocked the event loop, and tested a stricter command timeout as a safety change. Main track: six official submissions so far; the best public score is 0.20 (S006), up from 0.06 on the first.",
       "whatILearned": "Local scores did not predict the leaderboard. Measuring on the official scorer early, and changing one variable at a time, saves scarce GPU hours.",
       "kind": "Competition work",
       "featured": false,
@@ -427,7 +426,7 @@
       "slug": "hireloop-ai",
       "name": "HireLoop AI",
       "status": "Submitted to Bolt Builders Week 2026",
-      "description": "An AI career workspace that analyses a resume, scores it against a job post, drafts tailored applications, tracks applications on a Kanban board and offers AI coaching. Built with Bolt.new, Google Gemini and Supabase.",
+      "description": "An AI career workspace that analyses a resume, scores it against a job post, drafts tailored applications, tracks applications on a Kanban board and offers AI coaching with Google Gemini. Built using Bolt.new and Supabase, with AI-assisted code generation.",
       "stack": [
         "React",
         "TypeScript",
@@ -461,10 +460,10 @@
       ],
       "problem": "Job seekers juggle resumes, job posts, drafts and follow-ups across tabs, and general-purpose AI tools readily invent experience that is not on the resume.",
       "architecture": "A React and TypeScript frontend on Supabase Auth and Postgres with row-level security. Gemini calls run in a Supabase Edge Function that requires an authenticated user, uses JSON response schemas and returns user-safe errors. Resumes upload as PDF, DOCX or TXT and are parsed in the browser. A code check rejects drafts that claim employment at the target company, with one retry.",
-      "whatILearned": "Shipping an LLM feature means owning its failure modes. Gemini's thinking tokens were silently truncating JSON output; the fix was to disable thinking for these calls and enforce JSON response schemas. Prompts alone do not stop invented claims, so the riskiest one also gets a code check.",
+      "whatILearned": "Shipping an LLM feature means owning its failure modes. Gemini's thinking tokens were silently truncating JSON output; the fix disabled thinking for these calls and enforced JSON response schemas. Prompts alone do not stop invented claims, so the riskiest one also gets a code check.",
       "kind": "Personal product · built with Bolt + Supabase",
       "featured": false,
-      "role": "Product idea, MVP scope, building and iterating in Bolt.new, QA on live builds, releases and the demo video. Most of the code was generated in Bolt.new from my prompts.",
+      "role": "Product requirements and MVP scope, testing live builds, release approvals and the Bolt Builders Week submission. Built using Bolt.new and Supabase, with AI-assisted code generation.",
       "limits": [
         "Job Match scores and drafts live only in page state and are lost on reload",
         "The no-invented-experience rule is mostly prompt-enforced; only the employment-at-target-company claim has a code check",
@@ -485,7 +484,7 @@
         "ast"
       ],
       "githubUrl": "https://github.com/MAAZSHAHEEN/bug-fixer",
-      "note": "Early prototype; no test suite yet. It was deployed on AWS EC2 behind Nginx; that demo is no longer online."
+      "note": "Early prototype; no test suite yet. Not safe to expose publicly: its /fix endpoint reads and overwrites client-supplied server file paths and has no authentication (documented in the README). An earlier demo on AWS EC2 behind Nginx is no longer online."
     }
   ],
   "experience": []
