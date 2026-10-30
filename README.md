@@ -84,9 +84,25 @@ text aligned with `site.json` when changing the profile.
 The owner's CV is served from `frontend/public/resume.pdf` at `/resume.pdf`
 and is copied into the production build by Vite.
 
+## Content model (`site.json`)
+
+- `profile`: name, title (hero eyebrow), tagline, bio, location, timezone,
+  availability, contact links, `resumeUrl` + `resumeUpdated`, `lookingFor`
+  (`roles`, `locations`) and `education`.
+- `projects`: case studies, in display order. `featured: true` marks the one the
+  hero "View case studies" button opens. Optional case-study fields (`users`, `role`,
+  `features`, `diagram`, `dataModel`, `endpoints`, `example`, `statusCodes`,
+  `decisions`, `security`, `testing`, `deployment`, `limits`) render as sections
+  only when present.
+- `additionalProjects`: compact cards under "Additional projects" (no detail page,
+  code link only).
+- `experience`: optional roles. The Experience section renders only when there is
+  at least one entry with `visible` not set to `false`; it is currently empty.
+- Keys starting with `_` (owner notes, TODOs) are stripped from prerendered HTML.
+
 ## Current functionality
 
-- Homepage: Hero, Selected Projects, About, Skills, Education, and Contact.
+- Homepage: Hero, Selected Projects (+ Additional projects), optional Experience, About, Skills, Education, and Contact.
 - Self-hosted Inter and JetBrains Mono, amber accents, technical project cards,
   categorized skill lists, and responsive light/dark surfaces.
 - Project detail pages at `/projects/:slug`, with separate not-found and
@@ -113,7 +129,22 @@ head tags in sync on client-side navigation. Vite also emits `robots.txt` and
 `sitemap.xml` from the same origin and slugs.
 
 FastAPI serves `/projects/<slug>` from the prerendered file and returns the
-prerendered 404 page with a real `404` status for unknown paths.
+prerendered 404 page with a real `404` status for unknown paths. Case-study pages
+are a lazily loaded chunk; the prerenderer (`react-dom/static`) waits for it.
+
+## HTTP behaviour
+
+- Removed project pages `/projects/bug-fixer` and `/projects/fastapi-expense-tracker`
+  return `301` to `/#additional-projects` and `/#projects` (`REMOVED_PROJECT_REDIRECTS`
+  in `app/main.py`).
+- Every response carries `X-Content-Type-Options: nosniff`,
+  `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, a
+  minimal `Permissions-Policy` and a CSP limited to `frame-ancestors 'none'; base-uri
+  'self'; object-src 'none'; form-action 'self'`. Script/style sources are not
+  restricted because the prerendered pages use inline bootstrap scripts.
+- Cache-Control: hashed `/assets/*` are `public, max-age=31536000, immutable`; HTML and
+  `/api/*` are `no-cache`; `/resume.pdf`, `robots.txt`, `sitemap.xml` 1 hour; images
+  1 day. Cloudflare in front may add its own edge caching.
 
 ## Backend commands
 
@@ -196,6 +227,13 @@ it in Cloud uploads and excludes environments, caches, tests, and IDE files.
 Do not upload `.env` files or commit Cloud credentials (`backend/.fastapicloud/`
 is local only). Set `ENVIRONMENT=production` in the app's Cloud environment.
 No paid API keys or application secrets are required.
+
+**Deploy step: legacy host redirect.** After deploying, confirm that
+`https://maazshaheen.tech/` reaches the app with `Host: maazshaheen.tech` (not the
+`fastapicloud.dev` host), for example by checking that `/api/health` works on the custom
+domain. Then set `LEGACY_HOST_REDIRECT=true` in the Cloud environment and redeploy so
+`maaz-shaheen-portfolio.fastapicloud.dev` 301s to the canonical domain. If the custom
+domain proxies with the legacy `Host` header, leave it `false` (it would loop).
 
 Production builds reject a missing origin and localhost. Updating a Cloud
 runtime variable alone does not change static frontend metadata; rebuild.

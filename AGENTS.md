@@ -80,7 +80,7 @@ Defined as CSS variables in `src/index.css`:
 
 ## Current scope and process
 
-Implemented: read-only profile/skills/project/health APIs, all homepage
+Implemented: read-only profile/skills/project/additional-projects/experience/health APIs, removed-slug 301s, security and cache headers, all homepage
 sections, project detail pages, catch-all frontend 404, safe theme storage,
 route/hash scrolling, and backend tests. Contact uses email/social links.
 There is no contact form endpoint, email service, rate limiting, AI chat,

@@ -289,7 +289,7 @@
       "example": {
         "title": "Request a seat, then try again",
         "request": "POST /bookings/42 HTTP/1.1\nAuthorization: Bearer <access_token>",
-        "response": "HTTP/1.1 201 Created\n{\n  \"id\": 7,\n  \"ride_id\": 42,\n  \"passenger_id\": 3,\n  \"status\": \"pending\"\n}\n\n# same request again while the booking is active\nHTTP/1.1 409 Conflict\n{\n  \"detail\": \"You already booked this ride\"\n}",
+        "response": "HTTP/1.1 201 Created\n{\n  \"id\": 7,\n  \"ride_id\": 42,\n  \"passenger_id\": 3,\n  \"status\": \"pending\"\n}\n\n# same request again\nHTTP/1.1 409 Conflict\n{\n  \"detail\": \"You already booked this ride\"\n}",
         "caption": "IDs are illustrative. Response shapes and messages come from the rideshare-v2 code."
       },
       "statusCodes": [
