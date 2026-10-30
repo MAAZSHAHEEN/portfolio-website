@@ -10,7 +10,6 @@ class Education(CamelModel):
 
 class LookingFor(CamelModel):
     roles: list[str]
-    fields: list[str]
     locations: list[str]
 
 
@@ -20,10 +19,12 @@ class Profile(CamelModel):
     tagline: str
     bio: str
     location: str
+    timezone: str
     availability: str
     email: str
     github: str
     linkedin: str
     resume_url: str
+    resume_updated: str | None = None
     looking_for: LookingFor
     education: list[Education]

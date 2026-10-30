@@ -2,6 +2,8 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
+from app.schemas.additional import AdditionalProject
+from app.schemas.experience import Experience
 from app.schemas.profile import Profile
 from app.schemas.project import Project
 from app.schemas.skill import SkillGroup
@@ -18,6 +20,12 @@ class SiteData:
         self.profile = Profile.model_validate(raw["profile"])
         self.skills = [SkillGroup.model_validate(group) for group in raw["skills"]]
         self.projects = [Project.model_validate(project) for project in raw["projects"]]
+        self.additional_projects = [
+            AdditionalProject.model_validate(item) for item in raw.get("additionalProjects", [])
+        ]
+        entries = [Experience.model_validate(item) for item in raw.get("experience", [])]
+        # Hidden entries stay in site.json for the owner but are never served.
+        self.experience = [entry for entry in entries if entry.visible]
 
     def get_project(self, slug: str) -> Project | None:
         return next((p for p in self.projects if p.slug == slug), None)

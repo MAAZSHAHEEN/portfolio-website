@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 
+from app.schemas.additional import AdditionalProject
 from app.schemas.project import Project
 from app.services.site_data import SiteData, get_site_data
 
@@ -19,3 +20,10 @@ async def get_project(slug: str, site: Annotated[SiteData, Depends(get_site_data
     if project is None:
         raise HTTPException(status_code=404, detail=f"Project '{slug}' not found")
     return project
+
+
+@router.get("/additional-projects", response_model=list[AdditionalProject])
+async def list_additional_projects(
+    site: Annotated[SiteData, Depends(get_site_data)],
+) -> list[AdditionalProject]:
+    return site.additional_projects

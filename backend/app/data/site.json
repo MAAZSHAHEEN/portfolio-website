@@ -1,9 +1,9 @@
 {
   "profile": {
     "name": "Maaz Shaheen",
-    "title": "Python Backend Engineer / FastAPI Developer",
-    "tagline": "I build FastAPI and PostgreSQL backends with tested authentication, server-side permissions and data integrity under concurrent load.",
-    "bio": "I'm a Python backend engineer based in Lahore. My work centres on FastAPI services backed by PostgreSQL: async SQLAlchemy, Alembic migrations, JWT authentication, permission policies enforced on the server, and integration tests that run in CI on every push. I also integrate LLMs into products, from Google Gemini in HireLoop AI to a Gemma 4 coding agent for a Kaggle competition.",
+    "title": "Python Backend Engineer · FastAPI",
+    "tagline": "I build FastAPI and PostgreSQL backends: authentication, server-side permissions, migrations, and data that stays correct under concurrent requests.",
+    "bio": "I'm a Computer Science graduate from UET Mardan (2021–2025), focused on Python backend engineering. My strongest work is in FastAPI with async SQLAlchemy and PostgreSQL: Alembic migrations, JWT authentication with server-side permission checks, Docker, and CI. I also build LLM features with Google Gemini and competed in Kaggle's Gemma 4 coding-agent challenge.",
     "location": "Lahore, Pakistan",
     "email": "maazshaheen5566@gmail.com",
     "github": "https://github.com/MAAZSHAHEEN",
@@ -11,30 +11,26 @@
     "resumeUrl": "/resume.pdf",
     "lookingFor": {
       "roles": [
-        "Python Backend Engineer",
+        "Junior Python Backend Engineer",
         "FastAPI Developer",
-        "Backend Software Engineer"
-      ],
-      "fields": [
-        "Python",
-        "FastAPI",
-        "Backend APIs",
-        "AI integration"
+        "Junior AI Engineer"
       ],
       "locations": [
-        "Remote from Pakistan: US, Canada, UK, Europe, Australia",
-        "On-site or hybrid in Lahore or Islamabad"
+        "Lahore (on-site/hybrid)",
+        "Remote"
       ]
     },
     "education": [
       {
-        "degree": "BS in Computer Science",
+        "degree": "Bachelor of Science in Computer Science (BSCS)",
         "institution": "UET Mardan",
         "startYear": 2021,
         "endYear": 2025
       }
     ],
-    "availability": "Open to International Remote Opportunities"
+    "availability": "Open to junior backend roles · Lahore or remote",
+    "timezone": "PKT (UTC+5)",
+    "resumeUpdated": "Oct 2026"
   },
   "skills": [
     {
@@ -43,11 +39,11 @@
         "Python",
         "FastAPI",
         "Pydantic",
-        "Async I/O",
-        "REST APIs",
-        "JWT",
         "SQLAlchemy (async)",
-        "Alembic"
+        "Alembic",
+        "REST APIs",
+        "JWT auth & server-side permissions",
+        "Async I/O"
       ]
     },
     {
@@ -60,14 +56,23 @@
       ]
     },
     {
+      "group": "Testing",
+      "items": [
+        "unittest",
+        "pytest",
+        "PostgreSQL integration tests",
+        "GitHub Actions CI"
+      ]
+    },
+    {
       "group": "DevOps / Deployment",
       "items": [
         "Docker",
         "Docker Compose",
         "GitHub Actions",
         "FastAPI Cloud",
-        "Nginx",
         "AWS EC2",
+        "Nginx",
         "Git",
         "Linux"
       ]
@@ -78,20 +83,18 @@
         "Google Gemini API",
         "Gemma 4",
         "Google ADK",
-        "Anthropic Claude API",
         "Agentic workflows"
       ]
     },
     {
-      "group": "Tools",
+      "group": "Frontend & tools",
       "items": [
+        "React",
+        "TypeScript",
         "Uvicorn",
         "uv",
         "Ruff",
-        "pytest",
-        "Postman",
-        "React",
-        "TypeScript"
+        "Postman"
       ]
     }
   ],
@@ -99,8 +102,8 @@
     {
       "slug": "rideshare-api",
       "name": "RideShare API v2",
-      "status": "v2 in development",
-      "description": "Intercity ride-sharing backend for Pakistan built with FastAPI, async SQLAlchemy and PostgreSQL. JWT auth, a server-side capability policy and row-level locking keep permissions and seat counts correct under concurrent requests.",
+      "status": "v2 in development · live preview",
+      "description": "Intercity ride-sharing backend built with FastAPI, async SQLAlchemy and PostgreSQL. JWT auth, a server-side capability policy and row-level locking keep permissions and seat counts correct under concurrent requests.",
       "stack": [
         "Python",
         "FastAPI",
@@ -121,6 +124,10 @@
         {
           "label": "Live app",
           "url": "https://rideshare-api.fastapicloud.dev/"
+        },
+        {
+          "label": "CI run (194 tests)",
+          "url": "https://github.com/MAAZSHAHEEN/rideshare-api/actions/runs/39391809960"
         }
       ],
       "image": {
@@ -130,19 +137,296 @@
         "height": 750
       },
       "highlights": [
-        "Ride, then booking row locks (SELECT ... FOR UPDATE) serialize accept, cancel and complete",
+        "Ride, then booking row locks (SELECT … FOR UPDATE) serialize accept, cancel and complete",
         "Unique partial index blocks duplicate active bookings and maps to HTTP 409",
         "One account acts as passenger and driver; permissions are checked on the server, never trusted from the client",
-        "PostgreSQL integration, concurrency and migration tests run in GitHub Actions on every push"
+        "194 tests passing in CI against real PostgreSQL, including concurrency and migration tests"
       ],
       "problem": "Drivers publish intercity rides with a fixed number of seats and passengers request them. Two concurrent accept or cancel requests can oversell seats, and a dashboard mode chosen in the browser must never be treated as permission.",
       "architecture": "Routers declare the HTTP contract and services own the business rules and transactions on the request's AsyncSession. Every booking decision locks the Ride row first and then its bookings in ID order, so accept, cancel and complete serialize and seat changes commit atomically. A unique partial index on active bookings prevents duplicates. One ordinary account can act as passenger and driver: permissions.py is the shared server-side capability policy, and the frontend's selected mode is presentation only. Alembic owns the schema, and auth rate limiting is Redis-backed and opt-in. The v2 work lives on the rideshare-v2 branch, with a preview deployment on FastAPI Cloud serving the React frontend and the API from one origin.",
-      "whatILearned": "Correctness under concurrency comes from lock order and database constraints, not from checks in Python. PostgreSQL integration tests, including concurrency and migration upgrade/downgrade tests running in CI, made larger refactors safe."
+      "whatILearned": "Correctness under concurrency comes from lock order and database constraints, not from checks in Python. PostgreSQL integration tests, including concurrency and migration upgrade/downgrade tests running in CI, made larger refactors safe.",
+      "kind": "Featured case study",
+      "featured": true,
+      "users": "Built for intercity commuters in Khyber Pakhtunkhwa. Drivers publish rides with a fixed number of seats; passengers search and request seats; drivers accept or decline requests and complete or cancel rides.",
+      "role": "Solo developer and maintainer: API design, data model and Alembic migrations, service layer, tests, CI and deployment. The React frontend lives in the same repository and is served by the API.",
+      "features": [
+        "Registration and JWT login; GET /me returns the account and its allowed modes",
+        "Publish rides; search by origin, destination, departure window and minimum seats, with limit/offset pagination",
+        "Request a seat; drivers accept or decline; passengers cancel; drivers complete or cancel rides",
+        "Passenger view of my bookings, driver view of my rides and each ride's bookings",
+        "React 19 + Vite frontend served from the same origin as the API"
+      ],
+      "diagram": {
+        "flow": [
+          {
+            "label": "Client",
+            "detail": "React 19 + Vite SPA, or any HTTP client with a bearer token",
+            "kind": "client"
+          },
+          {
+            "label": "FastAPI routers",
+            "detail": "HTTP contract, Pydantic validation, JWT dependency, sanitized 422s",
+            "kind": "service"
+          },
+          {
+            "label": "Services + permissions.py",
+            "detail": "Business rules, transactions, row locks, server-side capability policy",
+            "kind": "service"
+          },
+          {
+            "label": "PostgreSQL 15",
+            "detail": "Async SQLAlchemy (asyncpg); schema owned by Alembic; CHECK constraints and a partial unique index",
+            "kind": "db"
+          }
+        ],
+        "aside": [
+          {
+            "label": "Redis 7",
+            "detail": "Opt-in auth rate limiter (disabled in production)",
+            "kind": "cache",
+            "connectsTo": "FastAPI routers"
+          }
+        ],
+        "caption": "Request path: client → routers → services → PostgreSQL. Redis is only used by the optional authentication rate limiter."
+      },
+      "dataModel": [
+        {
+          "name": "users",
+          "columns": "id, name, email (unique), password hash, cnic (unique), phone_number, role, created_at, updated_at",
+          "note": "GET /me omits CNIC and phone"
+        },
+        {
+          "name": "rides",
+          "columns": "id, driver_id → users, origin, destination, departure_time (tz), available_seats, fare_per_seat, status (active | completed | cancelled)",
+          "note": "CHECK available_seats >= 0 and fare_per_seat >= 0; index (status, departure_time, id)"
+        },
+        {
+          "name": "bookings",
+          "columns": "id, ride_id → rides, passenger_id → users, status (pending | accepted | rejected | cancelled), created_at",
+          "note": "Unique partial index uq_bookings_active_passenger_ride WHERE status IN ('pending', 'accepted')"
+        }
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/auth/register",
+          "auth": false,
+          "summary": "Create a passenger or driver account (201)"
+        },
+        {
+          "method": "POST",
+          "path": "/auth/login",
+          "auth": false,
+          "summary": "Exchange email and password for a JWT"
+        },
+        {
+          "method": "GET",
+          "path": "/me",
+          "auth": true,
+          "summary": "Current account and allowed modes"
+        },
+        {
+          "method": "POST",
+          "path": "/rides/",
+          "auth": true,
+          "summary": "Publish a ride (201)"
+        },
+        {
+          "method": "GET",
+          "path": "/rides/",
+          "auth": true,
+          "summary": "Search active rides with filters and pagination"
+        },
+        {
+          "method": "GET",
+          "path": "/rides/me",
+          "auth": true,
+          "summary": "Rides I drive"
+        },
+        {
+          "method": "GET",
+          "path": "/rides/{ride_id}/bookings",
+          "auth": true,
+          "summary": "Bookings on my ride (passenger id and name only)"
+        },
+        {
+          "method": "PATCH",
+          "path": "/rides/{ride_id}/complete",
+          "auth": true,
+          "summary": "Complete my ride"
+        },
+        {
+          "method": "PATCH",
+          "path": "/rides/{ride_id}/cancel",
+          "auth": true,
+          "summary": "Cancel my ride"
+        },
+        {
+          "method": "POST",
+          "path": "/bookings/{ride_id}",
+          "auth": true,
+          "summary": "Request a seat (201, pending)"
+        },
+        {
+          "method": "GET",
+          "path": "/bookings/me",
+          "auth": true,
+          "summary": "My bookings with ride details"
+        },
+        {
+          "method": "PATCH",
+          "path": "/bookings/{booking_id}/respond",
+          "auth": true,
+          "summary": "Driver accepts or declines (?accept=true|false)"
+        },
+        {
+          "method": "PATCH",
+          "path": "/bookings/{booking_id}/cancel",
+          "auth": true,
+          "summary": "Passenger cancels a booking"
+        }
+      ],
+      "example": {
+        "title": "Request a seat, then try again",
+        "request": "POST /bookings/42 HTTP/1.1\nAuthorization: Bearer <access_token>",
+        "response": "HTTP/1.1 201 Created\n{\n  \"id\": 7,\n  \"ride_id\": 42,\n  \"passenger_id\": 3,\n  \"status\": \"pending\"\n}\n\n# same request again while the booking is active\nHTTP/1.1 409 Conflict\n{\n  \"detail\": \"You already booked this ride\"\n}",
+        "caption": "IDs are illustrative. Response shapes and messages come from the rideshare-v2 code."
+      },
+      "statusCodes": [
+        {
+          "code": 201,
+          "meaning": "Created",
+          "example": "Account, ride or booking created"
+        },
+        {
+          "code": 401,
+          "meaning": "Unauthenticated",
+          "example": "Missing, tampered or alg-none token; login returns a generic \"Invalid email or password\""
+        },
+        {
+          "code": 403,
+          "meaning": "Not allowed",
+          "example": "Capability or ownership check failed, e.g. \"You cannot book your own ride\""
+        },
+        {
+          "code": 404,
+          "meaning": "Not found",
+          "example": "\"Ride not found\", \"Booking not found\""
+        },
+        {
+          "code": 409,
+          "meaning": "Conflict",
+          "example": "Duplicate active booking, no seats left, ride not active, booking already responded to, registration details in use"
+        },
+        {
+          "code": 422,
+          "meaning": "Invalid input",
+          "example": "Sanitized validation errors (passwords and emails are not echoed); departure time must be in the future"
+        },
+        {
+          "code": 429,
+          "meaning": "Rate limited",
+          "example": "Too many authentication attempts, with Retry-After (opt-in limiter)"
+        },
+        {
+          "code": 503,
+          "meaning": "Database unavailable",
+          "example": "Generic message from the /test-db health check"
+        }
+      ],
+      "decisions": [
+        {
+          "title": "Lock the ride, then its bookings",
+          "body": "Every booking decision runs SELECT … FOR UPDATE on the Ride row first and then on its bookings in ID order. Accept, cancel and complete on the same ride serialize, and seat changes commit atomically, so two concurrent accepts cannot consume the same seat."
+        },
+        {
+          "title": "Let PostgreSQL enforce one active booking",
+          "body": "A unique partial index on (ride_id, passenger_id) WHERE status IN ('pending', 'accepted') blocks duplicates even if two requests pass the application check at once. Only a violation of that named constraint is mapped to 409; other integrity errors are not misclassified."
+        },
+        {
+          "title": "Capabilities on the server, modes in the UI",
+          "body": "One ordinary account gets both passenger and driver capabilities, and admin gets neither; public registration rejects admin. permissions.py is the shared policy every service checks. The dashboard mode chosen in the frontend is presentation only."
+        },
+        {
+          "title": "Alembic owns the schema",
+          "body": "Four revisions define the schema, and application startup only checks database connectivity; it never calls create_all. CI runs a fresh upgrade before the suite, and migration tests cover upgrade, downgrade and re-upgrade."
+        }
+      ],
+      "security": [
+        "JWT via python-jose (HS256/384/512) with an enforced minimum key length; decoding requires the expected claims",
+        "bcrypt (12 rounds) runs in a threadpool so hashing does not block the event loop",
+        "Startup rejects a missing, placeholder or short SECRET_KEY",
+        "Validation errors are sanitized so passwords and emails are not echoed back",
+        "Generic login and registration-conflict messages; GET /me omits CNIC and phone",
+        "Optional Redis rate limiter for auth: fixed windows, atomic Lua, HMAC-keyed, fails closed"
+      ],
+      "testing": {
+        "summary": "194 tests passing in CI. The backend suite uses unittest against a real PostgreSQL 15 database, with Redis 7.4 as a service, after a fresh Alembic upgrade.",
+        "items": [
+          "Concurrency races: accept vs cancel, and two concurrent accepts consuming one seat",
+          "Migration upgrade, downgrade and re-upgrade",
+          "JWT tampering and alg-none rejection",
+          "bcrypt offload keeps the event loop responsive"
+        ],
+        "ciUrl": "https://github.com/MAAZSHAHEEN/rideshare-api/actions/runs/39391809960",
+        "ciLabel": "CI run: Ran 194 tests … OK (rideshare-v2, Oct 20, 2026)"
+      },
+      "deployment": [
+        "v1 was deployed on AWS EC2 behind Nginx; v2 runs on FastAPI Cloud, serving the React frontend and the API from one origin",
+        "Multi-stage Dockerfile: Node 22 builds the frontend, then a Python 3.11-slim image runs uvicorn on $PORT",
+        "Docker Compose runs PostgreSQL 15 for local development",
+        "GitHub Actions runs the PostgreSQL integration suite on pushes to main and rideshare-v2 and on every pull request"
+      ],
+      "limits": [
+        "Fixed-window rate limiting allows bursts, and the limiter stays disabled in production until the FastAPI Cloud ingress is verified",
+        "Offset pagination can shift under concurrent writes and returns no total count",
+        "A cancelled ride's seat count is bookkeeping, not real capacity",
+        "No driver verification is implemented or claimed",
+        "The JWT is kept in memory, so a page reload means signing in again",
+        "Frontend Vitest and Playwright tests exist but do not run in CI yet"
+      ]
+    },
+    {
+      "slug": "gemma-4-coding-agent",
+      "name": "Gemma 4 Coding Agent",
+      "status": "Kaggle competition · closes Dec 2, 2026",
+      "description": "My entry in Kaggle's Gemma 4 coding-agent competition: an autonomous agent built on Gemma 4 31B and Google's Agent Development Kit that works through Python coding tasks without human input.",
+      "stack": [
+        "Python",
+        "Gemma 4 31B",
+        "Google ADK",
+        "Kaggle Notebooks"
+      ],
+      "githubUrl": null,
+      "liveUrl": null,
+      "liveLabel": null,
+      "links": [
+        {
+          "label": "Kaggle profile",
+          "url": "https://www.kaggle.com/maazshaheen"
+        }
+      ],
+      "image": null,
+      "highlights": [
+        "Agent built with Google ADK on Gemma 4 31B",
+        "Runs within the free weekly Kaggle GPU quota",
+        "Best public leaderboard score 0.20, up from 0.06 on the first of six submissions",
+        "Paper-track write-up \"When Thinking Helps—and Hurts\" submitted on October 28, 2026"
+      ],
+      "problem": "An open-weight model has to fix real code inside strict GPU and time limits, with no human in the loop.",
+      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Every experiment is logged and compared before anything is submitted, including bounded reasoning budgets. Along the way I found a hang in the evaluation harness, where a synchronous command tool blocked the event loop, and added a stricter timeout safety gate. Six official submissions so far; the best public score is 0.20, up from 0.06 on the first.",
+      "whatILearned": "Local scores did not predict the leaderboard. Measuring on the official scorer early, and changing one variable at a time, saves scarce GPU hours.",
+      "kind": "Competition work",
+      "featured": false,
+      "limits": [
+        "The public leaderboard covers about half of the test data and moves by roughly ±0.05 between draws, so 0.20 is a noisy estimate",
+        "Code, prompts and detailed results stay private until the competition rules allow publication after December 2, 2026; the paper-track write-up becomes public when the hackathon closes"
+      ]
     },
     {
       "slug": "hireloop-ai",
       "name": "HireLoop AI",
-      "status": "Bolt Builders Week 2026 entry",
+      "status": "Submitted to Bolt Builders Week 2026",
       "description": "An AI career workspace that analyses a resume, scores it against a job post, drafts tailored applications, tracks applications on a Kanban board and offers AI coaching. Built with Bolt.new, Google Gemini and Supabase.",
       "stack": [
         "React",
@@ -172,43 +456,37 @@
       "highlights": [
         "Resume analysis, job matching, tailored drafts, Kanban tracker, analytics and AI coaching",
         "Gemini runs in a Supabase Edge Function that requires a signed-in user",
-        "JSON response schemas and friendly rate-limit errors",
+        "JSON response schemas and user-safe errors",
         "Submitted to Bolt Builders Week 2026 on October 20, 2026"
       ],
       "problem": "Job seekers juggle resumes, job posts, drafts and follow-ups across tabs, and general-purpose AI tools readily invent experience that is not on the resume.",
       "architecture": "A React and TypeScript frontend on Supabase Auth and Postgres with row-level security. Gemini calls run in a Supabase Edge Function that requires an authenticated user, uses JSON response schemas and returns user-safe errors. Resumes upload as PDF, DOCX or TXT and are parsed in the browser. A code check rejects drafts that claim employment at the target company, with one retry.",
-      "whatILearned": "Shipping an LLM feature means owning its failure modes: Gemini's thinking tokens were silently truncating JSON output until I disabled thinking and enforced response schemas. Prompts alone do not stop invented claims, so the riskiest one also gets a code check."
-    },
+      "whatILearned": "Shipping an LLM feature means owning its failure modes. Gemini's thinking tokens were silently truncating JSON output; the fix was to disable thinking for these calls and enforce JSON response schemas. Prompts alone do not stop invented claims, so the riskiest one also gets a code check.",
+      "kind": "Personal product · built with Bolt + Supabase",
+      "featured": false,
+      "role": "Product idea, MVP scope, building and iterating in Bolt.new, QA on live builds, releases and the demo video. Most of the code was generated in Bolt.new from my prompts.",
+      "limits": [
+        "Job Match scores and drafts live only in page state and are lost on reload",
+        "The no-invented-experience rule is mostly prompt-enforced; only the employment-at-target-company claim has a code check",
+        "The code lives in Bolt.new and Supabase, so there is no public repository"
+      ]
+    }
+  ],
+  "additionalProjects": [
     {
-      "slug": "gemma-4-coding-agent",
-      "name": "Gemma 4 Coding Agent",
-      "status": "Ongoing Kaggle competition",
-      "description": "Case study of my entry in Kaggle's Gemma 4 coding-agent competition: an autonomous agent built on Gemma 4 31B and Google's Agent Development Kit that works through Python coding tasks without human input.",
+      "id": "ai-python-repair-api",
+      "name": "AI Python Repair API",
+      "label": "Prototype (2026)",
+      "description": "A FastAPI service where Google Gemini proposes a fix for a Python file, ast.parse validates the syntax, and an invalid fix is retried up to 3 times.",
       "stack": [
         "Python",
-        "Gemma 4 31B",
-        "Google ADK",
-        "Kaggle Notebooks"
+        "FastAPI",
+        "Google Gemini API",
+        "ast"
       ],
-      "githubUrl": null,
-      "liveUrl": null,
-      "liveLabel": null,
-      "links": [
-        {
-          "label": "Kaggle profile",
-          "url": "https://www.kaggle.com/maazshaheen"
-        }
-      ],
-      "image": null,
-      "highlights": [
-        "Agent built with Google ADK on Gemma 4 31B",
-        "Runs within the free weekly Kaggle GPU quota",
-        "Best public leaderboard score so far: 0.13, up from 0.06 on the first submission",
-        "Full write-up after the competition closes on December 2, 2026"
-      ],
-      "problem": "An open-weight model has to fix real code inside strict GPU and time limits, with no human in the loop.",
-      "architecture": "This is a high-level summary while the competition is running. The agent is built with Google ADK on Gemma 4 31B and runs in Kaggle notebooks within the free weekly GPU quota. Each experiment is logged and compared before anything is submitted. The first official submission scored 0.06 on the public leaderboard; a later revision raised the best public score to 0.13. Code, prompts and detailed results stay private until the competition rules allow a write-up after December 2, 2026.",
-      "whatILearned": "Local scores did not predict the leaderboard. Measuring on the official scorer early, and changing one variable at a time, saves scarce GPU hours."
+      "githubUrl": "https://github.com/MAAZSHAHEEN/bug-fixer",
+      "note": "Early prototype; no test suite yet. It was deployed on AWS EC2 behind Nginx; that demo is no longer online."
     }
-  ]
+  ],
+  "experience": []
 }
