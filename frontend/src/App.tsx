@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import { Footer } from '@/components/layout/Footer'
@@ -6,9 +7,12 @@ import { RouteScroll } from '@/components/layout/RouteScroll'
 import { RouteMetadata } from '@/components/seo/RouteMetadata'
 import { CustomCursor } from '@/components/ui/CustomCursor'
 import { ScrollProgress } from '@/components/ui/ScrollProgress'
-import { NotFound } from '@/pages/NotFound'
 import { Home } from '@/pages/Home'
-import { ProjectPage } from '@/pages/ProjectPage'
+import { NotFound } from '@/pages/NotFound'
+
+// Case studies load as their own chunk. The prerenderer waits for it, and during
+// hydration React keeps the server HTML until the chunk arrives.
+const ProjectPage = lazy(() => import('@/pages/ProjectPage'))
 
 function App() {
   return (
@@ -22,11 +26,13 @@ function App() {
       <RouteMetadata />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects/:slug" element={<ProjectPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div className="detail-shell min-h-[60vh]" />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects/:slug" element={<ProjectPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer />
     </div>

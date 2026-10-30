@@ -14,5 +14,7 @@ export function seedQueryClient(client: QueryClient, data: SiteData) {
   client.setQueryData(['profile'], data.profile)
   client.setQueryData(['skills'], data.skills)
   client.setQueryData(['projects'], data.projects)
+  client.setQueryData(['additional-projects'], data.additionalProjects ?? [])
+  client.setQueryData(['experience'], data.experience ?? [])
   for (const project of data.projects) client.setQueryData(['projects', project.slug], project)
 }

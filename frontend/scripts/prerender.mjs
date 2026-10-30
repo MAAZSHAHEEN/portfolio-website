@@ -37,10 +37,15 @@ const safeJson = (value) =>
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029')
 
-function page(route, metaPath) {
+// Keys starting with "_" (owner notes such as TODOs) never reach the public HTML.
+const publicSite = JSON.parse(
+  JSON.stringify(site, (key, value) => (key.startsWith('_') ? undefined : value)),
+)
+
+async function page(route, metaPath) {
   const meta = metaForPath(site, metaPath, siteUrl)
-  const appHtml = render(route, site)
-  const data = `<script>window.__PORTFOLIO_DATA__=${safeJson(site)};window.__PORTFOLIO_ROUTE__=${safeJson(route)}</script>`
+  const appHtml = await render(route, publicSite)
+  const data = `<script>window.__PORTFOLIO_DATA__=${safeJson(publicSite)};window.__PORTFOLIO_ROUTE__=${safeJson(route)}</script>`
   return template
     .replace(
       metaRegion,
@@ -63,7 +68,7 @@ const outputs = [
 for (const [route, metaPath, file] of outputs) {
   const target = path.join(distDir, file)
   mkdirSync(path.dirname(target), { recursive: true })
-  writeFileSync(target, page(route, metaPath))
+  writeFileSync(target, await page(route, metaPath))
   console.log(`prerendered ${route} -> ${path.relative(root, target)}`)
 }
 rmSync(ssrDir, { recursive: true, force: true })

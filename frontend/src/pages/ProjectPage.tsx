@@ -1,14 +1,17 @@
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
 import { Container } from '@/components/layout/Container'
+import { ApiErrorPanel } from '@/pages/NotFound'
+import { CaseStudyFooter } from '@/components/projects/CaseStudyFooter'
 import { ProjectDetail } from '@/components/projects/ProjectDetail'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ApiError } from '@/lib/api'
 import { useProject, useProjects } from '@/lib/queries'
 
-export function ProjectPage() {
+/** Default export so App can lazy-load case studies out of the home bundle. */
+export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
   const { data: project, isLoading, error, refetch, isFetching } = useProject(slug)
   const { data: projects } = useProjects()
@@ -36,17 +39,10 @@ export function ProjectPage() {
             <Skeleton className="h-5 w-1/2" />
           </div>
         ) : notFound ? (
-          <div role="alert" className="state-panel">
-            <p className="eyebrow">404 / Project</p>
-            <h1 className="section-title">Project not found</h1>
-            <p className="mt-3 text-muted-foreground">
-              This project does not exist or may have been renamed.
-            </p>
-            <Button className="mt-6" variant="outline" render={<Link to="/#projects" />}>
-              <ArrowLeft className="size-4" aria-hidden="true" />
-              Back to projects
-            </Button>
-          </div>
+          <ApiErrorPanel
+            title="Project not found"
+            detail="This project doesn't exist or was renamed."
+          />
         ) : error || !project ? (
           <div role="alert" className="state-panel">
             <p className="eyebrow">Error / Network</p>
@@ -69,17 +65,7 @@ export function ProjectPage() {
               position={index >= 0 ? index + 1 : undefined}
               total={projects?.length}
             />
-            {showNext && next ? (
-              <nav aria-label="More projects" className="detail-next">
-                <Link to={`/projects/${next.slug}`} className="detail-next-link">
-                  <span className="project-label">Next project</span>
-                  <span className="detail-next-title">
-                    {next.name}
-                    <ArrowRight className="size-5" aria-hidden="true" />
-                  </span>
-                </Link>
-              </nav>
-            ) : null}
+            <CaseStudyFooter next={showNext ? next : undefined} />
           </>
         )}
       </div>

@@ -1,4 +1,4 @@
-import type { Profile, Project, SkillGroup } from '@/types'
+import type { AdditionalProject, Experience, Profile, Project, SkillGroup } from '@/types'
 
 // Same-origin in production; Vite proxies these paths during development.
 
@@ -31,4 +31,6 @@ export const api = {
   getProjects: () => apiFetch<Project[]>('/projects'),
   getProject: (slug: string) => apiFetch<Project>(`/projects/${slug}`),
   getSkills: () => apiFetch<SkillGroup[]>('/skills'),
+  getAdditionalProjects: () => apiFetch<AdditionalProject[]>('/additional-projects'),
+  getExperience: () => apiFetch<Experience[]>('/experience'),
 }

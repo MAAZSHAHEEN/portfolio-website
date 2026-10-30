@@ -16,11 +16,12 @@ export function ProjectCard({ project, index, total }: ProjectCardProps) {
 
   return (
     <article className="project-card" aria-labelledby={headingId}>
-      <div className="project-meta" aria-hidden="true">
-        <span className="project-number">{number}</span>
-        <span className="project-meta-total">/ {String(total).padStart(2, '0')}</span>
-        <span className="project-meta-rule" />
-        <span className="project-meta-tag">{project.status}</span>
+      <div className="project-meta">
+        <span className="project-count" aria-hidden="true">
+          <span className="project-number">{number}</span> / {String(total).padStart(2, '0')}
+        </span>
+        <span className="project-meta-rule" aria-hidden="true" />
+        <span className="project-meta-tag">{project.kind}</span>
       </div>
 
       {project.image ? (
@@ -43,10 +44,11 @@ export function ProjectCard({ project, index, total }: ProjectCardProps) {
 
       <div className="project-main">
         <h3 id={headingId} className="project-title">
-          <Link to={`/projects/${project.slug}`} className="focus-link">
+          <Link to={`/projects/${project.slug}`} className="focus-link project-title-link">
             {project.name}
           </Link>
         </h3>
+        <p className="project-status">{project.status}</p>
         <p className="project-summary">{project.description}</p>
         <div className="project-problem">
           <p className="project-label">Problem</p>
