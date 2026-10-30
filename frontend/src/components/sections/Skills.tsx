@@ -4,18 +4,14 @@ import { Reveal } from '@/components/motion/Reveal'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSkills } from '@/lib/queries'
 
-export function Skills() {
+export function Skills({ eyebrow }: { eyebrow: string }) {
   const { data: groups, isLoading, isError } = useSkills()
   const [primary, ...rest] = groups ?? []
 
   return (
     <section id="skills" className="section-shell" aria-labelledby="skills-title">
       <Container>
-        <SectionHeading
-          id="skills-title"
-          eyebrow="03 / Skills & tools"
-          title="The stack behind the work"
-        />
+        <SectionHeading id="skills-title" eyebrow={eyebrow} title="The stack behind the work" />
         <div className="skills-layout">
           {isLoading ? (
             <>

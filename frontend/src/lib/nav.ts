@@ -3,8 +3,7 @@ export interface NavLink {
   href: string
 }
 
-// Anchors match the section ids added to the Home page in Phase 2. The
-// leading "/" lets these links work from any route (e.g. a project page).
+// The leading "/" lets these links work from any route (e.g. a project page).
 export const NAV_LINKS: NavLink[] = [
   { label: 'Projects', href: '/#projects' },
   { label: 'About', href: '/#about' },

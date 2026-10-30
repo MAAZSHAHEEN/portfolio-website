@@ -1,14 +1,16 @@
-import { ArrowRight, Download, Mail } from 'lucide-react'
+import { ArrowRight, Download } from 'lucide-react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
+import { CopyEmailButton } from '@/components/contact/CopyEmailButton'
 import { HeroLamp } from '@/components/hero/HeroLamp'
 import { HeroStreaks } from '@/components/hero/HeroStreaks'
 import { GitHubIcon, LinkedInIcon } from '@/components/icons'
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useProfile, useSkills } from '@/lib/queries'
+import { CV_DOWNLOAD_NAME } from '@/lib/cv'
+import { useProfile, useProjects, useSkills } from '@/lib/queries'
 
 /** Keeps each item intact; separators trail items so wrapped lines never start with one. */
 function MetaList({ items }: { items: string[] }) {
@@ -26,7 +28,9 @@ function MetaList({ items }: { items: string[] }) {
 export function Hero() {
   const { data: profile, isLoading, isError } = useProfile()
   const { data: skills } = useSkills()
+  const { data: projects } = useProjects()
   const backend = skills?.[0]
+  const featured = projects?.find((project) => project.featured) ?? projects?.[0]
 
   return (
     <section id="hero" aria-label="Introduction" className="hero-shell lamp-hero">
@@ -45,27 +49,32 @@ export function Hero() {
           </p>
         ) : (
           <>
-            <HeroLamp name={profile.name}>
-              <p className="hero-role">{profile.title}</p>
+            <HeroLamp name={profile.name} eyebrow={profile.title}>
               <p className="hero-availability">
                 <span className="status-dot" aria-hidden="true" />
                 {profile.availability}
               </p>
               <p className="hero-tagline">{profile.tagline}</p>
               <div className="hero-actions">
-                <Button size="lg" render={<Link to="/#projects" />}>
-                  View projects <ArrowRight className="size-4" aria-hidden="true" />
+                <Button
+                  size="lg"
+                  render={<Link to={featured ? `/projects/${featured.slug}` : '/#projects'} />}
+                >
+                  View case studies <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  render={<a href={profile.resumeUrl} download />}
+                  render={<a href={profile.resumeUrl} download={CV_DOWNLOAD_NAME} />}
                 >
                   <Download className="size-4" aria-hidden="true" />
-                  Download CV
+                  Download CV (PDF)
                 </Button>
               </div>
               <ul className="hero-socials" aria-label="Profiles and contact">
+                <li>
+                  <CopyEmailButton email={profile.email} className="text-link" />
+                </li>
                 <li>
                   <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">
                     <GitHubIcon className="size-4" />
@@ -78,23 +87,19 @@ export function Hero() {
                     LinkedIn
                   </a>
                 </li>
-                <li>
-                  <Link className="text-link" to="/#contact">
-                    <Mail className="size-4" aria-hidden="true" />
-                    Contact
-                  </Link>
-                </li>
               </ul>
             </HeroLamp>
             <dl className="hero-meta">
               <div>
                 <dt>Based in</dt>
-                <dd>{profile.location}</dd>
+                <dd>
+                  <MetaList items={[profile.location, profile.timezone]} />
+                </dd>
               </div>
               <div>
-                <dt>Focus</dt>
+                <dt>Looking for</dt>
                 <dd>
-                  <MetaList items={profile.lookingFor.fields} />
+                  <MetaList items={profile.lookingFor.locations} />
                 </dd>
               </div>
               {backend ? (

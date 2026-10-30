@@ -1,33 +1,17 @@
-import { ArrowUpRight, Check, Copy, Download, Mail } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { ArrowUpRight, Download, Mail } from 'lucide-react'
 
+import { CopyEmailButton } from '@/components/contact/CopyEmailButton'
 import { GitHubIcon, LinkedInIcon } from '@/components/icons'
 import { Container } from '@/components/layout/Container'
 import { SectionHeading } from '@/components/layout/SectionHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CV_DOWNLOAD_NAME } from '@/lib/cv'
 import { useProfile } from '@/lib/queries'
 
-export function Contact() {
+export function Contact({ eyebrow }: { eyebrow: string }) {
   const { data: profile, isLoading, isError } = useProfile()
-  const [copied, setCopied] = useState(false)
-  const timer = useRef<number | undefined>(undefined)
-
-  useEffect(() => () => window.clearTimeout(timer.current), [])
-
-  async function handleCopyEmail() {
-    if (!profile) return
-    try {
-      await navigator.clipboard.writeText(profile.email)
-      setCopied(true)
-      window.clearTimeout(timer.current)
-      timer.current = window.setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Clipboard API unavailable or permission denied - the mailto link
-      // still works as a fallback.
-    }
-  }
 
   return (
     <section id="contact" className="section-shell" aria-labelledby="contact-title">
@@ -36,9 +20,9 @@ export function Contact() {
           <span className="contact-glow" aria-hidden="true" />
           <SectionHeading
             id="contact-title"
-            eyebrow="05 / Contact"
-            title="Let's work together"
-            description="Have a role or a project in mind? I'd love to hear from you."
+            eyebrow={eyebrow}
+            title="Let's talk backend"
+            description={profile ? `${profile.availability}.` : undefined}
           />
 
           <div className="mt-8">
@@ -58,29 +42,28 @@ export function Contact() {
                   {profile.email}
                   <ArrowUpRight className="contact-email-arrow" aria-hidden="true" />
                 </a>
+                <p className="contact-where">
+                  {profile.location} · {profile.timezone}
+                </p>
 
                 <div className="contact-actions">
                   <Button size="lg" render={<a href={`mailto:${profile.email}`} />}>
                     <Mail className="size-4" aria-hidden="true" />
                     Email me
                   </Button>
-                  <Button size="lg" variant="outline" onClick={handleCopyEmail}>
-                    {copied ? (
-                      <Check className="size-4" aria-hidden="true" />
-                    ) : (
-                      <Copy className="size-4" aria-hidden="true" />
-                    )}
-                    <span aria-live="polite">{copied ? 'Copied!' : 'Copy email'}</span>
-                  </Button>
+                  <CopyEmailButton email={profile.email} className="copy-email-button" />
                   <Button
                     size="lg"
                     variant="outline"
-                    render={<a href={profile.resumeUrl} download />}
+                    render={<a href={profile.resumeUrl} download={CV_DOWNLOAD_NAME} />}
                   >
                     <Download className="size-4" aria-hidden="true" />
-                    Download CV
+                    Download CV (PDF)
                   </Button>
                 </div>
+                {profile.resumeUpdated ? (
+                  <p className="cv-updated">CV last updated {profile.resumeUpdated}</p>
+                ) : null}
 
                 <ul className="contact-socials" aria-label="Profiles">
                   <li>

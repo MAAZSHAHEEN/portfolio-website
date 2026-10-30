@@ -6,17 +6,13 @@ import { Reveal } from '@/components/motion/Reveal'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useProfile } from '@/lib/queries'
 
-export function Education() {
+export function Education({ eyebrow }: { eyebrow: string }) {
   const { data: profile, isLoading, isError } = useProfile()
   return (
     <section id="education" className="section-shell" aria-labelledby="education-title">
       <Container>
         <div className="about-grid">
-          <SectionHeading
-            id="education-title"
-            eyebrow="04 / Education"
-            title="Academic foundation"
-          />
+          <SectionHeading id="education-title" eyebrow={eyebrow} title="Academic foundation" />
           <div className="min-w-0">
             {isLoading ? (
               <Skeleton className="h-24 w-full" />

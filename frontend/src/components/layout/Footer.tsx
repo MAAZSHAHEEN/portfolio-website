@@ -2,6 +2,7 @@ import { ArrowUp } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { Container } from '@/components/layout/Container'
+import { CV_DOWNLOAD_NAME } from '@/lib/cv'
 import { NAV_LINKS } from '@/lib/nav'
 import { useProfile } from '@/lib/queries'
 
@@ -15,7 +16,14 @@ export function Footer() {
             <Link to="/" className="focus-link footer-name">
               {profile?.name ?? 'Portfolio'}
             </Link>
-            {profile ? <p className="footer-role">{profile.title}</p> : null}
+            {profile ? (
+              <>
+                <p className="footer-role">{profile.title}</p>
+                <p className="footer-role">
+                  {profile.location} · {profile.timezone}
+                </p>
+              </>
+            ) : null}
           </div>
           <nav aria-label="Footer">
             <p className="footer-label">Navigate</p>
@@ -34,6 +42,11 @@ export function Footer() {
               <p className="footer-label">Connect</p>
               <ul className="footer-links">
                 <li>
+                  <a className="text-link" href={`mailto:${profile.email}`}>
+                    {profile.email}
+                  </a>
+                </li>
+                <li>
                   <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">
                     GitHub
                   </a>
@@ -44,14 +57,12 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a className="text-link" href={`mailto:${profile.email}`}>
-                    Email
+                  <a className="text-link" href={profile.resumeUrl} download={CV_DOWNLOAD_NAME}>
+                    CV (PDF)
                   </a>
-                </li>
-                <li>
-                  <a className="text-link" href={profile.resumeUrl} download>
-                    CV
-                  </a>
+                  {profile.resumeUpdated ? (
+                    <span className="footer-meta"> · updated {profile.resumeUpdated}</span>
+                  ) : null}
                 </li>
               </ul>
             </div>
@@ -59,8 +70,8 @@ export function Footer() {
         </div>
         <div className="footer-bottom">
           <p>
-            &copy; {new Date().getFullYear()} {profile?.name ?? 'Portfolio'}. Built with React and
-            FastAPI.
+            &copy; {new Date().getFullYear()} {profile?.name ?? 'Portfolio'}. Built with FastAPI +
+            React, prerendered.
           </p>
           <button
             type="button"

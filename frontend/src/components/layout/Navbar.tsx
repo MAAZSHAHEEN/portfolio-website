@@ -1,48 +1,82 @@
 import { Download, Menu, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Container } from '@/components/layout/Container'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { CV_DOWNLOAD_NAME } from '@/lib/cv'
 import { cn } from '@/lib/utils'
 import { NAV_LINKS } from '@/lib/nav'
 import { useProfile } from '@/lib/queries'
+
+const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   // Starts false so prerendered markup matches; the effect syncs the real position.
   const [scrolled, setScrolled] = useState(false)
   const { data: profile } = useProfile()
+  const header = useRef<HTMLElement>(null)
+  const toggle = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // While open: Esc closes and returns focus, Tab stays inside the bar + menu,
+  // the page behind does not scroll, and wide viewports close it automatically.
   useEffect(() => {
     if (!isOpen) return
+    const close = (restoreFocus: boolean) => {
+      setIsOpen(false)
+      if (restoreFocus) toggle.current?.focus()
+    }
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setIsOpen(false)
-        document.getElementById('menu-toggle')?.focus()
+        event.preventDefault()
+        close(true)
+        return
+      }
+      if (event.key !== 'Tab' || !header.current) return
+      const items = [...header.current.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+        (el) => el.offsetParent !== null,
+      )
+      if (!items.length) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
       }
     }
+    const wide = window.matchMedia('(min-width: 768px)')
+    const onWide = () => wide.matches && close(false)
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
+    wide.addEventListener('change', onWide)
+    document.querySelector<HTMLElement>('#mobile-nav a')?.focus()
+    return () => {
+      document.body.style.overflow = overflow
+      document.removeEventListener('keydown', onKeyDown)
+      wide.removeEventListener('change', onWide)
+    }
   }, [isOpen])
 
   return (
     <header
-      className={cn(
-        'sticky top-0 z-50 border-b border-transparent bg-background/95 transition-[background-color,border-color,box-shadow] duration-300',
-        scrolled && 'border-border bg-background/85 shadow-sm backdrop-blur-md',
-      )}
+      ref={header}
+      className={cn('site-header', (scrolled || isOpen) && 'site-header-scrolled')}
     >
       <Container>
-        <nav aria-label="Primary" className="flex min-h-18 items-center justify-between gap-3">
-          <Link to="/" onClick={() => setIsOpen(false)} className="focus-link nav-brand">
+        <nav aria-label="Primary" className="flex min-h-16 items-center justify-between gap-3">
+          <Link to="/" className="focus-link nav-brand">
             <span className="nav-brand-mark" aria-hidden="true" />
             {profile?.name ?? 'Portfolio'}
           </Link>
@@ -57,13 +91,19 @@ export function Navbar() {
               ))}
             </ul>
             {profile ? (
-              <a href={profile.resumeUrl} download className="nav-cv hidden md:inline-flex">
+              <a
+                href={profile.resumeUrl}
+                download={CV_DOWNLOAD_NAME}
+                className="nav-cv"
+                aria-label="Download CV (PDF)"
+              >
                 <Download className="size-3.5" aria-hidden="true" />
                 CV
               </a>
             ) : null}
             <ThemeToggle />
             <button
+              ref={toggle}
               id="menu-toggle"
               type="button"
               onClick={() => setIsOpen((open) => !open)}
@@ -80,35 +120,33 @@ export function Navbar() {
             </button>
           </div>
         </nav>
-        <div id="mobile-nav" hidden={!isOpen} className="border-t border-border py-3 md:hidden">
+      </Container>
+      <div id="mobile-nav" hidden={!isOpen} className="mobile-nav md:hidden">
+        <Container>
           <ul>
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <Link
-                  to={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-link nav-link flex min-h-12 w-full rounded-lg px-3 hover:bg-accent"
-                >
+                <Link to={link.href} onClick={() => setIsOpen(false)} className="mobile-nav-link">
                   {link.label}
                 </Link>
               </li>
             ))}
-            {profile ? (
-              <li>
-                <a
-                  href={profile.resumeUrl}
-                  download
-                  onClick={() => setIsOpen(false)}
-                  className="text-link flex min-h-12 w-full gap-2 rounded-lg px-3 hover:bg-accent"
-                >
-                  <Download className="size-4" aria-hidden="true" />
-                  Download CV
-                </a>
-              </li>
-            ) : null}
           </ul>
-        </div>
-      </Container>
+          {profile ? (
+            <div className="mobile-nav-foot">
+              <a href={`mailto:${profile.email}`} className="text-link">
+                {profile.email}
+              </a>
+              <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a className="text-link" href={profile.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </div>
+          ) : null}
+        </Container>
+      </div>
     </header>
   )
 }

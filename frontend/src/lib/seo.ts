@@ -34,6 +34,12 @@ function personLd(profile: Profile, origin: string) {
       '@type': 'CollegeOrUniversity',
       name: item.institution,
     })),
+    hasCredential: profile.education.map((item) => ({
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'degree',
+      name: `${item.degree}, ${item.institution}, ${item.startYear}–${item.endYear}`,
+      recognizedBy: { '@type': 'CollegeOrUniversity', name: item.institution },
+    })),
   }
 }
 
@@ -41,7 +47,7 @@ export function homeMeta(site: SiteData, origin: string): RouteMeta {
   const { profile } = site
   return {
     title: `${profile.name} | Python Backend Engineer & FastAPI Developer, Lahore`,
-    description: `${profile.name} is a Python backend engineer in Lahore, Pakistan, building FastAPI and PostgreSQL services. ${profile.availability}. Projects: ${site.projects.map((p) => p.name).join(', ')}.`,
+    description: `${profile.name}, Python backend engineer in Lahore, Pakistan, building FastAPI and PostgreSQL services. ${profile.availability}. Case studies: ${site.projects.map((p) => p.name).join(', ')}.`,
     canonical: `${origin}/`,
     robots: 'index, follow',
     ogType: 'profile',

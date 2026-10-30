@@ -10,7 +10,15 @@ type LampStyle = CSSProperties & {
 type Drag = { pointerId: number; startX: number; offset: number }
 
 /** CSS owns idle/settling motion; React only handles pointer input and phase changes. */
-export function HeroLamp({ name, children }: { name: string; children: ReactNode }) {
+export function HeroLamp({
+  name,
+  eyebrow,
+  children,
+}: {
+  name: string
+  eyebrow: string
+  children: ReactNode
+}) {
   const [isOn, setIsOn] = useState(true)
   const [offset, setOffset] = useState(0)
   const [motion, setMotion] = useState<'auto' | 'drag' | 'settling' | 'waiting'>('auto')
@@ -103,26 +111,25 @@ export function HeroLamp({ name, children }: { name: string; children: ReactNode
             <span className="lamp-bulb" />
           </div>
         </div>
+        {/* Visible text is the accessible name; aria-pressed carries the on/off state. */}
         <button
           type="button"
-          role="switch"
-          aria-checked={isOn}
-          aria-label="Hero lamp"
+          aria-pressed={isOn}
           className="lamp-switch"
           onClick={() => setIsOn((on) => !on)}
         >
           <span className="lamp-switch-track" aria-hidden="true">
             <span />
           </span>
-          <span>{isOn ? 'ON' : 'OFF'}</span>
+          <span>Lamp</span>
         </button>
       </div>
       <div className="lamp-copy">
-        <h1 className="hero-name lamp-name">
-          <span>{title}</span>
-          <span className="lamp-name-light" aria-hidden="true">
-            {title}
-          </span>
+        <p className="hero-eyebrow">{eyebrow}</p>
+        {/* The lit copy of the name is a CSS pseudo-element (data-text), so the
+            heading's text and accessible name contain the name exactly once. */}
+        <h1 className="hero-name lamp-name" data-text={title}>
+          {title}
         </h1>
         {children}
       </div>

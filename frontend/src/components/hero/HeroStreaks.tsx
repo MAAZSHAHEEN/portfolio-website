@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 
 // Stable decorative values; no randomness, timers, or per-frame React updates.
+// Each trace plays once during the intro (CSS), then again only while the hero is hovered.
 const streaks = [
   [3, 12, 26, 0.6, 8.7, -2.1],
   [81, 23, 34, 0.5, 11.3, -6.5],
@@ -30,7 +31,7 @@ export function HeroStreaks() {
               '--streak-length': `${length}px`,
               '--streak-opacity': opacity,
               '--streak-duration': `${duration}s`,
-              '--streak-delay': `${delay}s`,
+              '--streak-delay': `${(Math.abs(delay) / 4).toFixed(2)}s`,
               '--streak-tone': `var(--streak-${['amber', 'neutral', 'gold'][index % 3]})`,
             } as CSSProperties
           }

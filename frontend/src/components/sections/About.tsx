@@ -4,13 +4,13 @@ import { Reveal } from '@/components/motion/Reveal'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useProfile } from '@/lib/queries'
 
-export function About() {
+export function About({ eyebrow }: { eyebrow: string }) {
   const { data: profile, isLoading, isError } = useProfile()
   return (
     <section id="about" className="section-shell" aria-labelledby="about-title">
       <Container>
         <div className="about-grid">
-          <SectionHeading id="about-title" eyebrow="02 / About" title="Behind the code" />
+          <SectionHeading id="about-title" eyebrow={eyebrow} title="Behind the code" />
           {isLoading ? (
             <div className="space-y-6">
               <Skeleton className="h-32 w-full" />
@@ -37,11 +37,7 @@ export function About() {
                       <dd>{profile.lookingFor.roles.join(' · ')}</dd>
                     </div>
                     <div>
-                      <dt>Focus</dt>
-                      <dd>{profile.lookingFor.fields.join(' · ')}</dd>
-                    </div>
-                    <div>
-                      <dt>Locations</dt>
+                      <dt>Where</dt>
                       <dd>{profile.lookingFor.locations.join(' · ')}</dd>
                     </div>
                   </dl>
