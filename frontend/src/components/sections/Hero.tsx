@@ -25,6 +25,17 @@ function MetaList({ items }: { items: string[] }) {
   ))
 }
 
+/** Splits "a · b" so narrow screens can stack the parts as two clean lines. */
+function AvailabilityParts({ text }: { text: string }) {
+  const parts = text.split(' · ')
+  return parts.map((part, index) => (
+    <Fragment key={part}>
+      <span className="hero-availability-part">{part}</span>
+      {index < parts.length - 1 ? <span className="hero-availability-sep"> · </span> : null}
+    </Fragment>
+  ))
+}
+
 export function Hero() {
   const { data: profile, isLoading, isError } = useProfile()
   const { data: skills } = useSkills()
@@ -52,7 +63,9 @@ export function Hero() {
             <HeroLamp name={profile.name} eyebrow={profile.title}>
               <p className="hero-availability">
                 <span className="status-dot" aria-hidden="true" />
-                {profile.availability}
+                <span className="hero-availability-text">
+                  <AvailabilityParts text={profile.availability} />
+                </span>
               </p>
               <p className="hero-tagline">{profile.tagline}</p>
               <div className="hero-actions">

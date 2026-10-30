@@ -2378,12 +2378,31 @@ code {
 .footer-links .text-link {
   overflow-wrap: anywhere;
 }
+.hero-availability-part {
+  white-space: nowrap;
+}
 @media (max-width: 479px) {
   .hero-availability {
     font-size: 0.75rem;
     letter-spacing: 0;
     border-radius: 14px;
-    padding-inline: 0.75rem;
+    padding: 0.375rem 0.875rem;
+    line-height: 1.45;
+  }
+  /* Intentional two-line pill: each part on its own line, dot centred beside them. */
+  .hero-availability-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .hero-availability-sep {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 }
 .api-example-panes > div {
