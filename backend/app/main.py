@@ -118,8 +118,17 @@ def _not_found_page() -> Response:
     raise HTTPException(status_code=404, detail="Not Found")
 
 
-@app.api_route("/projects/{slug}", methods=["GET", "HEAD"], include_in_schema=False)
 @app.api_route("/projects/{slug}/", methods=["GET", "HEAD"], include_in_schema=False)
+def project_trailing_slash(slug: str) -> Response:
+    """One URL per page: the trailing-slash form 301s to the canonical path."""
+    if slug in REMOVED_PROJECT_REDIRECTS:
+        return RedirectResponse(REMOVED_PROJECT_REDIRECTS[slug], status_code=301)
+    if SLUG_RE.fullmatch(slug):
+        return RedirectResponse(f"/projects/{slug}", status_code=301)
+    return _not_found_page()
+
+
+@app.api_route("/projects/{slug}", methods=["GET", "HEAD"], include_in_schema=False)
 def prerendered_project(slug: str) -> Response:
     """Serve the build-time prerendered case study without a trailing-slash redirect."""
     if slug in REMOVED_PROJECT_REDIRECTS:

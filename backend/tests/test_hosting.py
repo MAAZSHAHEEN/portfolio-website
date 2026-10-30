@@ -83,3 +83,9 @@ def test_cache_policy_static_files():
     assert main.cache_policy("/resume.pdf", "application/pdf") == "public, max-age=3600"
     assert main.cache_policy("/images/projects/x.webp", "image/webp") == "public, max-age=86400"
     assert main.cache_policy("/", "text/html; charset=utf-8") == "no-cache"
+
+
+async def test_trailing_slash_redirects_to_canonical(client, dist):
+    response = await client.get("/projects/rideshare-api/")
+    assert response.status_code == 301
+    assert response.headers["location"] == "/projects/rideshare-api"
